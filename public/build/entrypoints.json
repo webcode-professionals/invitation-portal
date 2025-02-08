@@ -1,0 +1,26 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.d2ae9d83.js",
+        "/build/179.ba599051.js",
+        "/build/421.c6ff837e.js",
+        "/build/app.81923315.js"
+      ],
+      "css": [
+        "/build/app.ebb9c7b2.css"
+      ]
+    },
+    "sfinv": {
+      "js": [
+        "/build/runtime.d2ae9d83.js",
+        "/build/179.ba599051.js",
+        "/build/sfinv.3fecebcb.js"
+      ],
+      "css": [
+        "/build/336.b643ed4f.css",
+        "/build/sfinv.946b13e2.css"
+      ]
+    }
+  }
+}
