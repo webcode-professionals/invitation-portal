@@ -2,7 +2,7 @@ window.env = {
     "wed_starts":"|| OM SHREE GANESHAY NAMAH ||",
     "APP_TITLE":"John Weds Mary",
     "APP_NAME":"#Shadi",
-    "APP_URL":"http://127.0.0.1:8000",
+    "APP_URL":"https://invitation.itdevs.in",
     "wed_home":"Home",
     "wed_intro":"Groom & Bride",
     "wed_event":"Event",

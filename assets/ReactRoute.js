@@ -10,8 +10,6 @@ function ReactRoute() {
         <Router>
             <Routes>
                 <Route path="/"  exact element={<Home/>} />
-                <Route path="/en"  exact element={<Home/>} />
-                <Route path="/hn"  exact element={<Home/>} />
                 <Route path="*"  element={<Error404/>} />
             </Routes>
         </Router>

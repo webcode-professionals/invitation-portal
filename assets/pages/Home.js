@@ -74,13 +74,6 @@ function Home() {
                         <div className="col-md-4 offset-md-4 col-sm-12">
                             <p className="starts">{window.env.wed_starts}</p>
                         </div>
-                        <div className="col-md-4">
-                            <select className="language-switch">
-                                <option value="">{window.env.wed_var30}</option>
-                                <option value="/en">English</option>
-                                <option value="/hn">हिंदी</option>
-                            </select>
-                        </div>
                     </div>
                     <div className="header-content clearfix"> <a className="logo" href="index.html">{window.env.APP_NAME}</a>
                         <nav className="navigation" role="navigation">

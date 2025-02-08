@@ -37,6 +37,7 @@
         <link href="{{ asset('vendor-css/flexslider.css') }}" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('vendor-css/jquery.fancybox.css') }}"rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('vendor-css/font-icon.css') }}" rel="stylesheet" />
+        <script src="{{ asset('js/sfinv_en.js') }}"></script>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
             {{ encore_entry_link_tags('sfinv') }}
@@ -45,17 +46,7 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
             {{ encore_entry_script_tags('sfinv') }}
-            {# <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> #}
-            <script>
-                var script = document.createElement('script');
-                if (window.location.pathname == "/hn") {
-                    script.src = "{{ asset('js/sfinv_hn.js') }}";
-                } else {
-                    script.src = "{{ asset('js/sfinv_en.js') }}";
-                }
-                var ref = document.querySelector('script');
-                ref.parentNode.insertBefore(script, ref);
-            </script>
+            <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         {% endblock %}
         <script>
             const current_year = "{{ 'now'|date('Y') }}";
