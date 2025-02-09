@@ -1,0 +1,44 @@
+{% extends 'dashboard.base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+{% block body_id 'register_page' %}
+{% block body %}
+    <div class="vertical-align-wrap">
+        <div class="vertical-align-middle">
+            <div class="auth-box ">
+                <div class="left">
+                    <div class="content">
+                        <div class="form-group text-right">
+                            <a id="backToHome" class="cursor-pointer">Back to homepage</a>
+                        </div>
+                        <div class="header">
+                            <div class="logo text-center"><img src="{{ absolute_url(asset('images/logo.jpg')) }}" alt="{{ app_name }}"></div>
+                            <p class="lead">Register your account</p>
+                        </div>
+                        {% for flash_error in app.flashes('verify_email_error') %}
+                            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                        {% endfor %}
+                        {% if form_errors(registrationForm) %}
+                            <div class="alert alert-danger">{{ form_errors(registrationForm) }}</div>
+                        {% endif %}
+                        {{ form_start(registrationForm) }}
+                            {{ form_row(registrationForm.email, {
+                                label: 'Email'
+                            }) }}
+                            {{ form_row(registrationForm.plainPassword, {
+                                label: 'Password'
+                            }) }}
+                            {{ form_row(registrationForm.agreeTerms) }}
+
+                            <button type="submit" class="btn btn-primary btn-lg btn-block btn-register">Register</button>
+                        {{ form_end(registrationForm) }}
+                        <div class="form-group text-left mt-3">
+                            <a href="{{ path('app_login') }}">Login yourself</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

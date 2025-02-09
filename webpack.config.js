@@ -40,6 +40,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('sfinv', './assets/sfinv.js')
+    .addEntry('sfDashboard', './assets/sfDashboard.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class ReactappController extends AbstractController
 {
-    #[Route('/{reactRouting}', name: 'app_reactapp', requirements: ['reactRouting'=>'^(?!login|admin|api).+'], defaults: ['reactRouting'=> null])]
+    #[Route('/{reactRouting}', name: 'app_reactapp', requirements: ['reactRouting'=>'^(?!security|register|dashboard|reset-password|api).+'], defaults: ['reactRouting'=> null])]
     public function index(): Response
     {
         return $this->render('reactapp/index.html.twig', [

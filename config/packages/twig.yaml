@@ -9,6 +9,8 @@ twig:
         app_keyword: '%env(APP_KEYWORD)%'
         app_description: '%env(APP_DESCRIPTION)%'
         app_email: '%env(APP_EMAIL)%'
+        app_version: '%env(APP_VERSION)%'
+    form_themes: ['bootstrap_5_layout.html.twig']
 
 when@test:
     twig:

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{{ app_title }}{% endblock %}</title>
+        <meta name="keywords" content="{{ app_keyword }}">
+		<meta name="description" content="{{ app_description }}">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="author" content="{{ app_author }}">
+        <!-- Facebook and Twitter integration -->
+        <meta property="og:title" content="{{ app_title }}"/>
+        <meta property="og:image" content="{{ asset('images/favicon-48.ico') }}"/>
+        <meta property="og:url" content="{{ app_url }}"/>
+        <meta property="og:site_name" content="{{ app_name }}"/>
+        <meta property="og:description" content="{{ app_description }}"/>
+        <meta name="twitter:title" content="{{ app_title}}" />
+        <meta name="twitter:image" content="{{ asset('images/favicon-48.ico') }}" />
+        <meta name="twitter:url" content="{{ app_url }}" />
+        <meta name="twitter:card" content="{{ app_name }}" />
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	    <link rel="shortcut icon" href="{{ asset('images/favicon-512.ico') }}">
+        <link rel="icon" href="{{ asset('images/favicon-16.ico') }}" sizes="16x16" />
+        <link rel="icon" href="{{ asset('images/favicon-48.ico') }}" sizes="48x48" />
+        <link rel="icon" href="{{ asset('images/favicon-512.ico') }}" sizes="512x512" />
+        <link rel="icon" type="image/png" href="{{ asset('images/favicon-96.png') }}" sizes="96x96" />
+        <link rel="apple-touch-icon-precomposed" href="{{ asset('images/favicon-96.ico') }}" sizes="96x96"/>
+        <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+        <link rel="canonical" href="{{ asset('images/favicon-512.ico') }}" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet"/>
+        <!-- GOOGLE FONTS -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+        
+        {% block stylesheets %}
+            <!-- VENDOR CSS -->
+            <link rel="stylesheet" href="{{ absolute_url(asset('dashboard/vendor/bootstrap/css/bootstrap.min.css')) }}?ver={{ app_version }}">
+            <link rel="stylesheet" href="{{ absolute_url(asset('dashboard/vendor/font-awesome/css/font-awesome.min.css')) }}?ver={{ app_version }}">
+            <link rel="stylesheet" href="{{ absolute_url(asset('dashboard/vendor/linearicons/style.css')) }}?ver={{ app_version }}">
+	        <link rel="stylesheet" href="{{ absolute_url(asset('dashboard/vendor/toastr/toastr.min.css')) }}?ver={{ app_version }}">
+            <!-- DATATABLE CSS -->
+            <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap.min.css" rel="stylesheet">
+            <!-- Datetimepicker -->
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+            {{ encore_entry_link_tags('sfDashboard') }}
+        {% endblock %}
+        {% block javascripts %}
+            <!-- Javascript -->
+            <script src="{{ absolute_url(asset('dashboard/vendor/jquery/jquery.min.js')) }}?ver={{ app_version }}"></script>
+            <script src="{{ absolute_url(asset('dashboard/vendor/bootstrap/js/bootstrap.min.js')) }}?ver={{ app_version }}"></script>
+            <script src="{{ absolute_url(asset('dashboard/vendor/jquery-slimscroll/jquery.slimscroll.min.js')) }}?ver={{ app_version }}"></script>
+	        <script src="{{ absolute_url(asset('dashboard/vendor/toastr/toastr.min.js')) }}?ver={{ app_version }}"></script>
+            <script src="{{ absolute_url(asset('dashboard/scripts/klorofil-common.js')) }}?ver={{ app_version }}"></script>
+
+            <!-- datatable -->
+            <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+            <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js"></script>
+
+            <!-- moment -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+            <!-- datetimepicker -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+            <!-- select2 -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
+            <!-- tinymce -->
+            <script src="{{ absolute_url(asset('dashboard/vendor/tinymce/tinymce.min.js')) }}?ver={{ app_version }}"></script>
+            <!-- main -->
+            <script src="{{ absolute_url(asset('dashboard/scripts/main.js')) }}?ver={{ app_version }}"></script>
+        {% endblock %}
+    </head>
+    <body class="" id="{% block body_id %}{% endblock %}">
+        {{ include('notification_message.html.twig') }}
+        <!-- WRAPPER -->
+	    <div id="wrapper">
+            {% block header %} {% endblock %}
+            {% block body %}{% endblock %}
+            {% block footer %}
+                <footer>
+                    <div class="container-fluid">
+                        <p class="copyright">&copy; {{ 'now'|date('Y') }} <a href="https://itdevs.in" target="_blank">IT Developers</a>. All Rights Reserved.</p>
+                    </div>
+                </footer>
+            {% endblock %}
+        </div>
+        <script>
+            const current_year = "{{ 'now'|date('Y') }}";
+            const img_path = "{{ asset('images') }}";
+            const app_url = "{{ app_url }}";
+            {# const image_upload_path = "{{ image_upload_path }}"; #}
+        </script>
+	    <!-- END WRAPPER -->
+    </body>
+</html>

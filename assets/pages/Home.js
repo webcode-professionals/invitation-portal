@@ -36,6 +36,9 @@ function Home() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
+    const loginBtn = () => {
+        window.location.href = process.env.APP_URL +''+ login_path;
+    }
 
     const  [PortfolioImg, setPortfolioImgList] = useState([])
     useEffect(() => {
@@ -45,14 +48,13 @@ function Home() {
         axios.get('/api/portfolio-image')
         .then(function (response) {
             setPortfolioImgList(response.data);
+            // Fancybox
+	        $('.work-box').fancybox();
         })
         .catch(function (error) {
           console.log(error);
         })
     }
-
-    // Fancybox
-	$('.work-box').fancybox();
 
     return (
         <Layout>
@@ -269,7 +271,7 @@ function Home() {
                                 )
                             })}
                         </div>
-                        <div className="mt-5 text-center"><button className="btn">View more</button></div>
+                        <div className="mt-5 text-center"><button onClick={loginBtn} className="btn">View more</button></div>
                     </div>
                 </section>
                 {/* gallery section -*/}

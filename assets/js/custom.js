@@ -69,8 +69,15 @@ $(function(){
 			});
 		});
 	}
-	var $animatingElements = $('.carousel-caption').find("[data-animation ^= 'animated']");
-	doAnimations($animatingElements);
+	const animatingElements = $('.carousel-caption').find("[data-animation ^= 'animated']");
+	doAnimations(animatingElements);
+	// const carousel = new bootstrap.Carousel('#carouselBanner')
+	const myCarouselElement = $('#carouselBanner');
+	myCarouselElement.on('slide.bs.carousel', function (e) {
+		let animatingElems = $(e.relatedTarget).find("[data-animation ^= 'animated']");
+		doAnimations(animatingElems);
+	});
+
 	//Variables on page load 
 	// var $myCarousel = $('#carousel-example-generic'),
 		// $firstAnimatingElems = $myCarousel.find('.item:first').find("[data-animation ^= 'animated']");
@@ -92,11 +99,6 @@ $(function(){
     //     interval:3000,
     //     pause: "false"
     // });
-
-	$('.language-switch').on("change", function(){
-		window.location.href = window.env.APP_URL + $('.language-switch').val();
-		// window.location.href = window.env.APP_URL + '?lang=' + $('.language-switch').val(); // on production
-	});
 });
 
 /* start preloader */

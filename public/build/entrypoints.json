@@ -5,7 +5,7 @@
         "/build/runtime.d2ae9d83.js",
         "/build/179.ba599051.js",
         "/build/421.c6ff837e.js",
-        "/build/app.67be658b.js"
+        "/build/app.55e0afc0.js"
       ],
       "css": [
         "/build/app.ebb9c7b2.css"
@@ -15,11 +15,20 @@
       "js": [
         "/build/runtime.d2ae9d83.js",
         "/build/179.ba599051.js",
-        "/build/sfinv.3fecebcb.js"
+        "/build/sfinv.7cd52b68.js"
       ],
       "css": [
         "/build/336.b643ed4f.css",
-        "/build/sfinv.946b13e2.css"
+        "/build/sfinv.64158339.css"
+      ]
+    },
+    "sfDashboard": {
+      "js": [
+        "/build/runtime.d2ae9d83.js",
+        "/build/sfDashboard.8599b8fa.js"
+      ],
+      "css": [
+        "/build/sfDashboard.308398eb.css"
       ]
     }
   }

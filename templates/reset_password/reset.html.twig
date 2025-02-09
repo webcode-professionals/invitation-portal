@@ -1,0 +1,37 @@
+{% extends 'dashboard.base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+{% block body_id 'reset_password' %}
+
+{% block body %}
+    <div class="vertical-align-wrap">
+        <div class="vertical-align-middle">
+            <div class="auth-box ">
+                <div class="left">
+                    <div class="content">
+                        <div class="form-group text-right">
+                            <a id="backToHome" class="cursor-pointer">Back to homepage</a>
+                        </div>
+                        <div class="header">
+                            <div class="logo text-center"><img src="{{ absolute_url(asset('images/logo.jpg')) }}" alt="{{ app_name }}"></div>
+                            <p class="lead">Reset your password</p>
+                        </div>
+                        {% for flash_error in app.flashes('reset_password_error') %}
+                            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                        {% endfor %}
+                        
+                        {{ form_start(resetForm) }}
+                            {{ form_row(resetForm.plainPassword) }}
+
+                            <button type="submit" class="btn btn-primary btn-lg btn-block btn-password-reset">Reset password</button>
+                        {{ form_end(resetForm) }}
+                        <div class="form-group text-left mt-3">
+                            <a href="{{ path('app_login') }}">Login yourself</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

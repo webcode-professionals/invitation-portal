@@ -1,0 +1,57 @@
+{% extends 'dashboard.base.html.twig' %}
+{% block header %}
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="brand">
+            <a href="{{ path('app_dashboard') }}" class="brand-link"><img src="{{ absolute_url(asset('images/logo.jpg')) }}?ver={{ app_version }}" class="img-responsive logo" size="32x32" width="32" height"32"><span>&nbsp;{{ app_name }}</span></a>
+        </div>
+        <div class="container-fluid">
+            <div class="navbar-btn">
+                <button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
+            </div>
+            <div id="navbar-menu">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown" style="text-align:right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-user"></i> <span>Howdy {% if is_granted('ROLE_ADMIN') %}Admin!{% elseif is_granted('ROLE_USER') %}User!{% endif %}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('app_logout') }}"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
+                            <li><a id="backToHome" class="cursor-pointer"><i class="lnr lnr-arrow-left"></i> <span>Back to homepage</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
+    {% set currentPath = app.request.pathinfo|split('/') %}
+    <!-- LEFT SIDEBAR -->
+    <div id="sidebar-nav" class="sidebar">
+        <div class="sidebar-scroll">
+            <nav>
+                <ul class="nav">
+                    <li><a href="{{ path('app_dashboard') }}" {% if 'dashboard' in currentPath %}class="active"{% endif %}><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
+                    {% if app.user.isApproved %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ path('app_users') }}" {% if 'users' in currentPath %}class="active"{% endif %}><i class="lnr lnr-users"></i> <span>Users</span></a></li>
+                        {% endif %}
+                        {# <li><a href="{{ path('app_mail_template') }}" {% if 'mail-template' in currentPath %}class="active"{% endif %}><i class="fa fa-envelope"></i> <span>Mail Templates</span></a></li>
+                        <li><a href="{{ path('app_files') }}" {% if 'files' in currentPath %}class="active"{% endif %}><i class="lnr lnr-file-add"></i> <span>Files</span></a></li>
+                        <li><a href="{{ path('app_mail_setting') }}" {% if 'mail' in currentPath %}class="active"{% endif %}><i class="lnr lnr-cog"></i> <span>Mail setting</span></a></li> #}
+                        {# <li>
+                            <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Pages</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="page-profile.html" class="">Profile</a></li>
+                                    <li><a href="page-login.html" class="">Login</a></li>
+                                    <li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+                                </ul>
+                            </div>
+                        </li> #}
+                        {# <li><a href="icons.html" class=""><i class="lnr lnr-cog"></i> <span>Settings</span></a></li> #}
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- END LEFT SIDEBAR -->
+{% endblock %}

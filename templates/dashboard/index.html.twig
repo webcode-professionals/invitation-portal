@@ -1,0 +1,55 @@
+{% extends 'dashboard/layout.html.twig' %}
+{% block title %}Dashboard -
+	{{ parent() }}
+{% endblock %}
+
+{% block body_id 'dashboard_page' %}
+{% block body %}
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="panel panel-headline">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="panel-title">Dashboard</h3>
+                                <p class="panel-subtitle">Today: {{ 'now'|date('d-F-Y, D') }}</p>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <p>{{ app.user.email }} 
+                                    {% if app.user.isVerified %}
+                                        <span class="label label-success">Email verified</span>
+                                    {% else %}
+                                        <span class="label label-warning">Email not verified</span>
+                                    {% endif %}
+                                </p>
+                                <p>User Status: 
+                                    {% if app.user.isApproved %}
+                                        <span class="label label-success">Approved</span>
+                                    {% else %}
+                                        <span class="label label-warning">Approval pending</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                {% if app.user.isApproved == false %}
+                                    <p>Admin has not approved your request yet please wait for some time and try again.</p>
+                                    <p><a id="backToHome" class="cursor-pointer"><i class="lnr lnr-arrow-left"></i> <span>Back to homepage</span></a></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+{% endblock %}

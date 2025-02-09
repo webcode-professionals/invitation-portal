@@ -1,0 +1,11 @@
+<!-- flash message -->
+<script>
+{% if app.request.hasPreviousSession %}
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            var notification_type = "{{ type }}";
+            var notification_msg = "{{ message }}";
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+</script>

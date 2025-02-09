@@ -5,8 +5,8 @@
         <title>{% block title %}{{ app_title }}{% endblock %}</title>
         <meta name="keywords" content="{{ app_keyword }}">
 		<meta name="description" content="{{ app_description }}">
-		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta name="author" content="{{ app_author }}">
         <!-- Facebook and Twitter integration -->
         <meta property="og:title" content="{{ app_title }}"/>
@@ -33,24 +33,24 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
         <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet"/>
-        <!-- CSS FILES -->
-        <link href="{{ asset('vendor-css/flexslider.css') }}" rel="stylesheet" />
-        <link rel="stylesheet" href="{{ asset('vendor-css/jquery.fancybox.css') }}"rel="stylesheet" />
-        <link rel="stylesheet" href="{{ asset('vendor-css/font-icon.css') }}" rel="stylesheet" />
-        <script src="{{ asset('js/sfinv_en.js') }}"></script>
         {% block stylesheets %}
+            <!-- CSS FILES -->
             {{ encore_entry_link_tags('app') }}
+            <link href="{{ asset('vendor-css/flexslider.css') }}" rel="stylesheet" />
+            <link rel="stylesheet" href="{{ asset('vendor-css/jquery.fancybox.css') }}"rel="stylesheet" />
+            <link rel="stylesheet" href="{{ asset('vendor-css/font-icon.css') }}" rel="stylesheet" />
+            <script src="{{ asset('js/sfinv_en.js') }}"></script>
             {{ encore_entry_link_tags('sfinv') }}
         {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
             {{ encore_entry_script_tags('sfinv') }}
-            <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         {% endblock %}
         <script>
             const current_year = "{{ 'now'|date('Y') }}";
             const img_path = "{{ asset('images') }}";
+            const login_path = "{{ path('app_login') }}";
         </script>
     </head>
     <body>

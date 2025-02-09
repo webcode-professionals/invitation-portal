@@ -1,0 +1,39 @@
+{% extends 'dashboard.base.html.twig' %}
+
+{% block title %}Password Reset Email Sent{% endblock %}
+{% block body_id 'check_email' %}
+
+{% block body %}
+    <div class="vertical-align-wrap">
+        <div class="vertical-align-middle">
+            <div class="auth-box ">
+                <div class="left">
+                    <div class="content">
+                        <div class="form-group text-right">
+                            <a id="backToHome" class="cursor-pointer">Back to homepage</a>
+                        </div>
+                        <div class="header">
+                            <div class="logo text-center"><img src="{{ absolute_url(asset('images/logo.jpg')) }}" alt="{{ app_name }}"></div>
+                            <p class="lead">Reset your password</p>
+                        </div>
+                        {% for flash_error in app.flashes('reset_password_error') %}
+                            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                        {% endfor %}
+                        <div class="form-group text-left">
+                            <p>
+                                If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
+                                This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+                            </p>
+                            <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+                        </div>
+                        <div class="form-group text-left mt-3">
+                            <a href="{{ path('app_login') }}">Login yourself</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
