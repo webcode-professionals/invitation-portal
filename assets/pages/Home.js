@@ -48,8 +48,10 @@ function Home() {
         axios.get('/api/portfolio-image')
         .then(function (response) {
             setPortfolioImgList(response.data);
-            // Fancybox
-	        $('.work-box').fancybox();
+            setTimeout(function () {
+                // Fancybox
+                $('.work-box').fancybox();
+            }, 3000);
         })
         .catch(function (error) {
           console.log(error);
