@@ -58,6 +58,73 @@ function Home() {
         })
     }
 
+    const [cust_name, setCustName] = useState('')
+    const [cust_email, setCustEmail] = useState('')
+    const [cust_mobile, setCustMobile] = useState('')
+    const [cust_message, setCustMessage] = useState('')
+    const [isSaving, setIsSaving] = useState(false)
+
+    const validateEmail = (email) => {
+        return email.match(
+          /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
+
+    const XSSPrevent = (field) => {
+        return field.includes("<script>");
+    }
+
+    const saveRecord = () => {
+        setIsSaving(true);
+        let formData = new FormData()
+        formData.append("cust_name", cust_name)
+        formData.append("cust_email", cust_email)
+        formData.append("cust_mobile", cust_mobile)
+        formData.append("cust_message", cust_message)
+
+        if(cust_name == "" || cust_email == "" || cust_mobile=="" || cust_message==""){
+            Swal.fire({
+                icon: 'error',
+                title: 'Name, email, mobile are required fields.',
+                showConfirmButton: true,
+                showCloseButton: true,
+            })
+            setIsSaving(false)
+        }
+        else if(!validateEmail(cust_email) || XSSPrevent(cust_message) || XSSPrevent(cust_mobile) || XSSPrevent(cust_name)){
+            Swal.fire({
+                icon: 'error',
+                title: 'Provide valid email, message, mobile & name.',
+                showConfirmButton: true,
+                showCloseButton: true,
+            })
+            setIsSaving(false)
+        }
+        else{
+            axios.post('/api/sendemail', formData)
+                .then(function (response){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Quries has been submitted successfully!',
+                        showConfirmButton: true,
+                    })
+                    setIsSaving(false);
+                    setCustName('')
+                    setCustEmail('')
+                    setCustMobile('')
+                    setCustMessage('')
+                })
+                .catch(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops, Something went wrong!',
+                        showConfirmButton: true,
+                    })
+            setIsSaving(false)
+            });
+        }
+    }
+
     return (
         <Layout>
             <div className="inv-portal">
@@ -353,7 +420,50 @@ function Home() {
                 </section>
                 {/* Testimonials section */}
                 {/* Footer section */}
-                <footer className="footer mt-3" id="contact">
+                <section className="section contact" id="contact">
+                    <div className="container">
+                        <div className="section-header">
+                            <h2 className="wow fadeInDown animated">{window.env.wed_var24}</h2>
+                            <p className="wow fadeInDown animated"></p>
+                        </div>
+                    </div>
+                    <div className="container">
+                        <div className='row'>
+                            <div className='col-md-6 conForm'>
+                                <form method="post" action="#" name="cform" id="cform">
+                                    <input name="cust_name" type="text" value={cust_name} className="form-control" placeholder="Your name..." id="fullname" onChange={(event)=>{setCustName(event.target.value)}}/>
+                                    <input name="cust_email" type="email" value={cust_email} className="form-control" placeholder="Email Address..." id="email" onChange={(event)=>{setCustEmail(event.target.value)}}/>
+                                    <input name="cust_mobile" type="tel" value={cust_mobile} className="form-control" placeholder="Mobile No..." id="tel" onChange={(event)=>{setCustMobile(event.target.value)}}/>
+                                    <textarea name="cust_message" rows="3" value={cust_message} className="form-control" id="message" placeholder="Message..." onChange={(event)=>{setCustMessage(event.target.value)}}></textarea>
+                                    <button type="button" id="msg_submit" onClick={saveRecord} disabled={isSaving} name="send" className="submitBnt">Send</button>
+                                </form>
+                            </div>
+                            <div className="col-md-6 ps-5">
+                                <h3>OUR POINT OF CONTACT</h3>
+                                <address className="mt-5">
+                                    <p> <i className="fa fa-phone"></i> +91 9464528225</p>
+                                    <p> <i className="fa fa-phone"></i> +1 (672) 833-8625</p>
+                                    <p> <i className="fa fa-envelope"></i> contact@itdevs.in</p>
+                                    <p className="address-title"> <i className="fa fa-map-marker"></i> New Delhi India</p>
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className="container">
+                        <div className='row'>
+                            <div className="col-md-4 offset-md-5 col-sm-12">
+                                <h3></h3>
+                                <address className="home-address mt-5">
+                                    <p className="address-title"> <i className="fa fa-map-marker"></i> {window.env.wed_var25}</p>
+                                    <p> <i className="fa fa-phone"></i> {window.env.wed_var26}</p>
+                                    <p> <i className="fa fa-train"></i> {window.env.wed_var27}</p>
+                                    <p> <i className="fa fa-plane"></i> {window.env.wed_var28}</p>
+                                </address>
+                            </div>
+                        </div>
+                    </div> */}
+                </section>
+                <footer id='footer'>
                     <div className="container-fluid">
                         <div id="map-row" className="row">
                             <div className="col-xs-12">
@@ -361,22 +471,24 @@ function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="container-fluid intro pt-5">
-                        <div className="col-md-10 offset-md-1 text-center">
-                            <h3>{window.env.wed_var24}</h3>
-                            <div className="contact">
-                                <p>{window.env.wed_var25}</p>
-                                <p> <i className="fa fa-phone"></i> {window.env.wed_var26}</p>
-                                <p> <i className="fa fa-train"></i> {window.env.wed_var27}</p>
-                                <p> <i className="fa fa-plane"></i> {window.env.wed_var28}</p>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-12 text-center">
+                                <p className="comp wow bounceIn" data-wow-offset="50" data-wow-delay="0.3s">
+                                    &copy; {current_year} All Rights Reserved. Designed with <i className="fa-regular fa-heart"></i> by <a href="https://itdevs.in" target="_blank">IT Developers</a>
+                                </p>
                             </div>
-                            <p className="comp">
-                                © {current_year} IT Developers. Designed by <i className="fa-regular fa-heart"></i> <a target="_blank" href="https://itdevs.in" title="IT Developers" rel="noreferrer">IT Developers</a>
-                            </p>
                         </div>
                     </div>
                     <button onClick={topHome} className="topHome"><i className="fa fa-chevron-up fa-2x"></i></button>
                 </footer>
+                <div className='advBanner'>
+                    <p>Create your own wedding invitation website.</p>
+                    <p>At just $20/- or ₹1499/- for 60 days in 30 minutes.</p>
+                    <p>Share your wedding photographs with your loved ones at just additional cost of $6/- or ₹499/- per month</p>
+                    <p>Contact us via email <a href='mailto:contact@itdevs.in'>contact@itdevs.in</a></p>
+                    <p className='text-center'><a className="btn" href="#contact">Contact us</a></p>
+                </div>
             </div>
         </Layout>
     );

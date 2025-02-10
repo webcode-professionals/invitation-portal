@@ -40,8 +40,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/security, roles: PUBLIC_ACCESS }
-        - { path: ^/register, roles: PUBLIC_ACCESS }
-        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: PUBLIC_ACCESS }
         - { path: ^/dashboard, roles: ROLE_USER }
 

@@ -16,17 +16,24 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Psr\Log\LoggerInterface;
 
-#[Route('/register')]
+#[Route('/security')]
 class RegistrationController extends AbstractController
 {
-    public function __construct(private EmailVerifier $emailVerifier)
+    public function __construct(private EmailVerifier $emailVerifier, private MailerInterface $mailerInterface, private LoggerInterface $loggerInterface)
     {
     }
 
-    #[Route('', name: 'app_register')]
+    #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
+        if($this->getUser()) {
+            return $this->redirectToRoute('app_dashboard'); 
+       }
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -51,6 +58,22 @@ class RegistrationController extends AbstractController
             );
 
             // do anything else you need here, like send an email
+            try {
+                #send an email to the admin for the approval.
+                $emailToAdmin = (new Email())
+                    ->to($this->getParameter('admin_email'))
+                    ->priority(Email::PRIORITY_HIGH)
+                    ->subject('New User registered!')
+                    ->html("
+                        <p>Hello Admin!</p>
+                        <p>Email :" . (string) $user->getEmail() . "</p>
+                        <p>New user has been registered, please take a action for the approval.</p>
+                    ");
+                $this->mailerInterface->send($emailToAdmin);
+            }
+            catch(TransportExceptionInterface $ex) {
+                $this->loggerInterface->info("Mail not sent ".var_export($ex, true));
+            }
 
             return $security->login($user, 'form_login', 'main');
         }

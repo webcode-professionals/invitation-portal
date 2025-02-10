@@ -9,29 +9,66 @@ $(document).ready(function() {
         window.location.href = app_url;
     });
 
-    if ($("#users_table").length) {
-        var data_table = $("#users_table").DataTable({
-            responsive: true,
-            orderCellsTop: true,
-            fixedHeader: true,
-        });
-    } else {
-        var data_table = $("#mail_template_table, #files_table, #anniversary_table, #spouse_birthday_table, #member_birthday_table").DataTable({
-            responsive: true,
-            orderCellsTop: true,
-            fixedHeader: true,
-            "lengthMenu": [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, "All"]
-            ],
-        });
-    }
+    setTimeout(function () {
+	    $('#login_page .preloader').hide();
+    }, 1000);
+
+    $("body").on("click", ".list-action", function() {
+        let id = $(this).attr("data-id");
+        let action_for = $(this).attr("data-for");
+        let action_type = $(this).attr("data-type");
+        if (action_type == "delete") {
+            $("#modal-notification-msg").text("You are about to delete selected " + action_for);
+            $("#modal-notification-btn").attr("data-id", id);
+            $("#modal-notification-btn").attr("data-type", action_type);
+            $("#modal-notification-btn").attr("data-for", action_for);
+        }
+    });
+
+    $("body").on("click", ".modal-submit-btn", function() {
+        let id = $(this).attr("data-id");
+        let action_for = $(this).attr("data-for");
+        let action_type = $(this).attr("data-type");
+        if (id.length) {
+            if (action_type == "delete" && action_for == "user")
+                window.location = window.location.origin + "/dashboard/users/delete/" + id;
+            if (action_type == "delete" && action_for == "file")
+                window.location = window.location.origin + "/admin/files/delete/" + id;
+            if (action_type == "delete" && action_for == "mail template")
+                window.location = window.location.origin + "/admin//mail-template/delete/" + id;
+        }
+    });
+
+    var data_table = $("#users_table, #files_table").DataTable({
+        responsive: true,
+        orderCellsTop: true,
+        fixedHeader: true,
+        "columnDefs": [
+            { "searchable": false, "orderable": false, "targets": 0 },
+        ],
+        "order": [
+            [1, "asc"]
+        ]
+    });
+
 
     if (data_table.length)
         new $.fn.dataTable.FixedHeader(data_table);
 
+    $(".btn-login").on("click", function() {
+        $(this).html('<i class="fa fa-spinner fa-spin"></i> Loging...');
+    });
+    $(".btn-register, .btn-password-reset").on("click", function() {
+        $(this).html('<i class="fa fa-spinner fa-spin"></i> Processing...');
+    });
+
+    $(".btn-send").on("click", function() {
+        $(this).attr("disabled", "disabled");
+        $(this).html('<i class="fa fa-spinner fa-spin"></i> Sending...');
+    });
+
     $("body").on('change', '.all_select', function(e) {
-        var checkbox_input = $('input[type=checkbox].select_member');
+        var checkbox_input = $('input[type=checkbox].select_items');
         var checked_member = false;
         if (e.originalEvent === undefined) {
             var allChecked = true;
@@ -51,60 +88,49 @@ $(document).ready(function() {
             $("#bulk_btn").attr("disabled", "disabled");
     });
 
-    $("body").on('change', 'input[type=checkbox].select_member', function() {
+    $("body").on('change', 'input[type=checkbox].select_items', function() {
         $('.all_select').trigger('change');
     });
 
     $("body").on("click", ".selected-action", function() {
         let action_for = $(this).attr("data-for");
         let action_type = $(this).attr("data-type");
-        var active_count = delete_count = inactive_count = 0;
-        if (action_for == "member") {
-            var checkbox_input = $(".select_member:checked");
-            var ids = [];
+        let active_count = 0;
+        let delete_count = 0;
+        let disapprove_count = 0;
+        if (action_for == "users") {
+            let checkbox_input = $(".select_items:checked");
+            let ids = [];
             checkbox_input.each(function() {
                 ids.push(this.value);
             });
-            $("#selected_member_id").val(ids);
+            $("#selected_users_id").val(ids);
             $("#select_delete").addClass("hidden");
-            $("#select_member_modal-btn").attr("disabled", "disabled");
+            $("#select_users_modal-btn").attr("disabled", "disabled");
+            $("#selected_users_type").val(action_type);
+            $("#selected_users_for").val(action_for);
             if (action_type == "delete") {
                 delete_count = checkbox_input.length;
-                $("#select_member_modal-msg").text("You are about to delete selected " + delete_count + " " + action_for + "s,");
-                $("#selected_member_type").val(action_type);
+                $("#select_users_modal-msg").text("You are about to delete selected " + delete_count + " " + action_for + ",");
                 $("#select_delete").removeClass("hidden");
                 if (delete_count > 0)
-                    $("#select_member_modal-btn").removeAttr("disabled");
-            } else if (action_type == "active") {
-                inactive_count = checkbox_input.parent().parent().find(".label-default").length;
-                $("#select_member_modal-msg").text("You are about to active selected " + inactive_count + " " + action_for + "s");
-                $("#selected_member_type").val(action_type);
-                if (inactive_count > 0)
-                    $("#select_member_modal-btn").removeAttr("disabled");
-            } else if (action_type == "inactive") {
-                active_count = checkbox_input.parent().parent().find(".label-success").length;
-                $("#select_member_modal-msg").text("You are about to inactive selected " + active_count + " " + action_for + "s");
-                $("#selected_member_type").val(action_type);
+                    $("#select_users_modal-btn").removeAttr("disabled");
+            } else if (action_type == "approve") {
+                disapprove_count = checkbox_input.parent().parent().find(".status.label-warning").length;
+                $("#select_users_modal-msg").text("You are about to approve selected " + disapprove_count + " " + action_for + ".");
+                if (disapprove_count > 0)
+                    $("#select_users_modal-btn").removeAttr("disabled");
+            } else if (action_type == "disapprove") {
+                active_count = checkbox_input.parent().parent().find(".status.label-success").length;
+                $("#select_users_modal-msg").text("You are about to disapprove selected " + active_count + " " + action_for + ".");
                 if (active_count > 0)
-                    $("#select_member_modal-btn").removeAttr("disabled");
+                    $("#select_users_modal-btn").removeAttr("disabled");
             }
         }
     });
 
     $('.datepicker').datetimepicker({
         format: 'DD-MM-YYYY',
-    });
-
-    $(".btn-login").on("click", function() {
-        $(this).html('<i class="fa fa-spinner fa-spin"></i> Loging...');
-    });
-    $(".btn-register, .btn-password-reset").on("click", function() {
-        $(this).html('<i class="fa fa-spinner fa-spin"></i> Processing...');
-    });
-
-    $(".btn-send").on("click", function() {
-        $(this).attr("disabled", "disabled");
-        $(this).html('<i class="fa fa-spinner fa-spin"></i> Sending...');
     });
 
     $(".csv_file_input").change(function() {
@@ -287,32 +313,6 @@ $(document).ready(function() {
 
     });
     /** end */
-
-    $("body").on("click", ".list-action", function() {
-        let id = $(this).attr("data-id");
-        let action_for = $(this).attr("data-for");
-        let action_type = $(this).attr("data-type");
-        if (action_type == "delete") {
-            $("#modal-notification-msg").text("You are about to delete selected " + action_for);
-            $("#modal-notification-btn").attr("data-id", id);
-            $("#modal-notification-btn").attr("data-type", action_type);
-            $("#modal-notification-btn").attr("data-for", action_for);
-        }
-    });
-
-    $("body").on("click", ".modal-submit-btn", function() {
-        let id = $(this).attr("data-id");
-        let action_for = $(this).attr("data-for");
-        let action_type = $(this).attr("data-type");
-        if (id.length) {
-            if (action_type == "delete" && action_for == "member")
-                window.location = window.location.origin + "/admin/member/delete/" + id;
-            if (action_type == "delete" && action_for == "file")
-                window.location = window.location.origin + "/admin/files/delete/" + id;
-            if (action_type == "delete" && action_for == "mail template")
-                window.location = window.location.origin + "/admin//mail-template/delete/" + id;
-        }
-    });
 
     /** csv form validation */
     $('body').on("click", ".member_csv_submit_btn", function() {

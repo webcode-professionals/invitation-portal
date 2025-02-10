@@ -107,5 +107,9 @@ $(document).ready(function() {
     setTimeout(function () {
 	    $('.preloader').hide();
     }, 1000);
+
+	setTimeout(function () {
+	    $('.advBanner').show();
+    }, 15000);
 });
 /* end preloader */
