@@ -38,18 +38,50 @@ $(document).ready(function() {
                 window.location = window.location.origin + "/admin//mail-template/delete/" + id;
         }
     });
-
-    var data_table = $("#users_table, #files_table").DataTable({
-        responsive: true,
-        orderCellsTop: true,
-        fixedHeader: true,
-        "columnDefs": [
-            { "searchable": false, "orderable": false, "targets": 0 },
-        ],
-        "order": [
-            [1, "asc"]
-        ]
-    });
+    var data_table = [];
+    if($("#users_table").length) {
+            data_table = $("#users_table").DataTable({
+            responsive: true,
+            orderCellsTop: true,
+            fixedHeader: true,
+            "columnDefs": [
+                { "searchable": false, "orderable": false, "targets": 0 },
+                { "searchable": false, "orderable": false, "targets": 6 },
+            ],
+            "order": [
+                [1, "asc"]
+            ]
+        });
+    }
+    else if($("#files_images_table").length) {
+            data_table = $("#files_images_table").DataTable({
+            responsive: true,
+            orderCellsTop: true,
+            fixedHeader: true,
+            "columnDefs": [
+                { "searchable": false, "orderable": false, "targets": 1 },
+                { "searchable": false, "orderable": false, "targets": 3 },
+                // { "searchable": false, "orderable": false, "targets": 4 },
+            ],
+            "order": [
+                [0, "asc"]
+            ]
+        });
+    }
+    else if($("#files_videos_table").length) {
+            data_table = $("#files_videos_table").DataTable({
+            responsive: true,
+            orderCellsTop: true,
+            fixedHeader: true,
+            "columnDefs": [
+                { "searchable": false, "orderable": false, "targets": 2 },
+                // { "searchable": false, "orderable": false, "targets": 3 },
+            ],
+            "order": [
+                [0, "asc"]
+            ]
+        });
+    }
 
 
     if (data_table.length)
@@ -129,377 +161,184 @@ $(document).ready(function() {
         }
     });
 
-    $('.datepicker').datetimepicker({
-        format: 'DD-MM-YYYY',
-    });
+    if($('.shared-image-box').length) {
+        $('.shared-image-box').fancybox();
+    }
 
-    $(".csv_file_input").change(function() {
-        if (this.files && this.files[0]) {
-            $('.drag_drop_text').html('<span>' + this.files[0]['name'] + '</span>');
-        }
-    });
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('.drag_drop_text').html('<span>' + input.files[0]['name'] + '</span>');
-                $('#image_preview').css('background-image', 'url(' + e.target.result + ')');
-                $('#image_preview').hide();
-                $('.image-preview').fadeIn(600);
-                $('#image_preview').fadeIn(650);
+    /** file uploader js start*/
+    const fileUploadBox = document.querySelector(".file-upload-box");
+    if(fileUploadBox) {
+        const fileList = document.querySelector(".file-list");
+        const fileBrowseButton = document.querySelector(".file-browse-button");
+        const fileBrowseInput = document.querySelector(".file-browse-input");
+        const fileCompletedStatus = document.querySelector(".file-completed-status");
+        const fileType = $("#file_type").val();
+        let totalFiles = 0;
+        let completedFiles = 0;
+        // Function to create HTML for each file item
+        const createFileItemHTML = (file, uniqueIdentifier) => {
+            // Extracting file name, size, and extension
+            const {name, size} = file;
+            const extension = name.split(".").pop();
+            const extensionResult = validateFileExtension(extension);
+            if (extensionResult) {
+                const formattedFileSize = size >= 1024 * 1024 ? `${(size / (1024 * 1024)).toFixed(2)} MB` : `${(size / 1024).toFixed(2)} KB`;
+                // Generating HTML for file item
+                return `<li class="file-item" id="file-item-${uniqueIdentifier}">
+                        <div class="file-extension">${extension}</div>
+                        <div class="file-content-wrapper">
+                        <div class="file-content">
+                            <div class="file-details">
+                            <h5 class="file-name">${name}</h5>
+                            <div class="file-info">
+                                <small class="file-size">0 MB / ${formattedFileSize}</small>
+                                <small class="file-divider">•</small>
+                                <small class="file-status">Uploading...</small>
+                            </div>
+                            </div>
+                            <button class="cancel-button">
+                            <i class="bx bx-x"></i>
+                            </button>
+                        </div>
+                        <div class="file-progress-bar">
+                            <div class="file-progress"></div>
+                        </div>
+                        </div>
+                    </li>`;
             }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    $(".file_input").change(function() {
-        readURL(this);
-    });
-
-    if ($("#content").length) {
-        tinymce.init({
-            selector: '#content',
-            toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent forecolor backcolor image',
-            plugins: 'paste, link, table, codesample, textcolor, code, image',
-            browser_spellcheck: true,
-            contextmenu: false,
-            formats: {
-                alignleft: { selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'left' },
-                aligncenter: { selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'center' },
-                alignright: { selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'right' },
-                alignjustify: { selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'full' },
-                bold: { inline: 'span', 'classes': 'bold' },
-                italic: { inline: 'span', 'classes': 'italic' },
-                underline: { inline: 'span', 'classes': 'underline', exact: true },
-                strikethrough: { inline: 'del' },
-                forecolor: { inline: 'span', classes: 'forecolor', styles: { color: '%value' } },
-                hilitecolor: { inline: 'span', classes: 'hilitecolor', styles: { backgroundColor: '%value' } },
-                custom_format: { block: 'h1', attributes: { title: 'Header' }, styles: { color: 'red' } }
-            },
-            image_list: window.location.origin + "/admin/file/list",
-            image_uploadtab: false,
-            automatic_uploads: false,
-            image_advtab: true,
-            image_prepend_url: app_url + '/' + image_upload_path + '/',
-            schema: 'html5',
-            max_height: 900,
-            max_width: 500,
-            min_height: 700,
-            min_width: 400,
-            branding: false
-        });
-    }
-
-    if ($('#active_from').length) {
-        $('#active_from').datetimepicker({
-            format: 'DD-MM-YYYY',
-        });
-        $('#active_to').datetimepicker({
-            useCurrent: false,
-            format: 'DD-MM-YYYY',
-        });
-        $("#active_from").on("dp.change", function(e) {
-            $('#active_to').data("DateTimePicker").minDate(e.date);
-        });
-        $("#active_to").on("dp.change", function(e) {
-            $('#active_from').data("DateTimePicker").maxDate(e.date);
-        });
-    }
-
-    function validateEmail(email) {
-        var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
-        if (email == '' || !re.test(email))
-            return false;
-        else
-            return true;
-    }
-
-    function validatedate(date) {
-        var dateformat = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
-        if (date.match(dateformat)) {
-            var opera2 = date.split('-');
-            lopera2 = opera2.length;
-            if (lopera2 > 1)
-                var pdate = date.split('-');
-            var dd = parseInt(pdate[0]);
-            var mm = parseInt(pdate[1]);
-            var yy = parseInt(pdate[2]);
-            var ListofDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            if (mm == 1 || mm > 2) {
-                if (dd > ListofDays[mm - 1])
-                    return false;
+            else {
+                return false;
             }
-            if (mm == 2) {
-                var lyear = false;
-                if ((!(yy % 4) && yy % 100) || !(yy % 400))
-                    lyear = true;
-                if ((lyear == false) && (dd >= 29))
-                    return false;
-                if ((lyear == true) && (dd > 29))
-                    return false;
+        }
+        // Function to validate file extension
+        const validateFileExtension = (ext) => {
+            if(fileType == 2) {
+                requiredExtension ="mp4,webm,mov";
             }
-            return true;
-        } else {
-            return false;
+            else {
+                requiredExtension ="png,jpg,jpeg,gif";
+            }
+            let position = requiredExtension.indexOf(ext.toLocaleLowerCase());
+            return position > -1 ? true : false;
+        }
+        // Function to handle selected files
+        const handleSelectedFiles = ([...files]) => {
+            if(files.length === 0) return; // Check if no files are selected
+            totalFiles += files.length;
+            files.forEach((file, index) => {
+                const uniqueIdentifier = Date.now() + index;
+                const fileItemHTML = createFileItemHTML(file, uniqueIdentifier);
+                if (fileItemHTML) {
+                    // Inserting each file item into file list
+                    fileList.insertAdjacentHTML("afterbegin", fileItemHTML);
+                    const currentFileItem = document.querySelector(`#file-item-${uniqueIdentifier}`);
+                    const cancelFileUploadButton = currentFileItem.querySelector(".cancel-button");
+                    const xhr = handleFileUploading(file, uniqueIdentifier);
+                    // Update file status text and change color of it 
+                    const updateFileStatus = (status, color) => {
+                        currentFileItem.querySelector(".file-status").innerText = status;
+                        currentFileItem.querySelector(".file-status").style.color = color;
+                    }
+                    xhr.addEventListener("readystatechange", () => {
+                        // Handling completion of file upload
+                        if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                            completedFiles++;
+                            cancelFileUploadButton.remove();
+                            updateFileStatus("Completed", "#00B125");
+                            fileCompletedStatus.innerText = `${completedFiles} / ${totalFiles} files completed`;
+                        }
+                    });
+                    // Handling cancellation of file upload
+                    cancelFileUploadButton.addEventListener("click", () => {
+                        xhr.abort(); // Cancel file upload
+                        updateFileStatus("Cancelled", "#E3413F");
+                        cancelFileUploadButton.remove();
+                    });
+                    // Show Alert if there is any error occured during file uploading
+                    xhr.addEventListener("error", () => {
+                        updateFileStatus("Error", "#E3413F");
+                        // alert("An error occurred during the file upload!");
+                        toastr["error"]("An error occurred during the file upload.");
+                    });
+                }
+                else {
+                    toastr["error"]("This file extension does not supported.");
+                }
+            });
+            fileCompletedStatus.innerText = `${completedFiles} / ${totalFiles} files completed`;
+        }
+        // Function to handle file drop event
+        fileUploadBox.addEventListener("drop", (e) => {
+            e.preventDefault();
+            handleSelectedFiles(e.dataTransfer.files);
+            fileUploadBox.classList.remove("active");
+            fileUploadBox.querySelector(".file-instruction").innerText = "Drag files here or";
+        });
+        // Function to handle file dragover event
+        fileUploadBox.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            fileUploadBox.classList.add("active");
+            fileUploadBox.querySelector(".file-instruction").innerText = "Release to upload or";
+        });
+        // Function to handle file dragleave event
+        fileUploadBox.addEventListener("dragleave", (e) => {
+            e.preventDefault();
+            fileUploadBox.classList.remove("active");
+            fileUploadBox.querySelector(".file-instruction").innerText = "Drag files here or";
+        });
+        fileBrowseInput.addEventListener("change", (e) => handleSelectedFiles(e.target.files));
+        fileBrowseButton.addEventListener("click", () => fileBrowseInput.click());
+        // Function to handle file uploading
+        const handleFileUploading = (file, uniqueIdentifier) => {
+            const folderNameInput = $("#folderNameInput").val();
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("folder_name", folderNameInput);
+            // Adding progress event listener to the ajax request
+            xhr.upload.addEventListener("progress", (e) => {
+                // Updating progress bar and file size element
+                const fileProgress = document.querySelector(`#file-item-${uniqueIdentifier} .file-progress`);
+                const fileSize = document.querySelector(`#file-item-${uniqueIdentifier} .file-size`);
+                // Formatting the uploading or total file size into KB or MB accordingly
+                const formattedFileSize = file.size >= 1024 * 1024  ? `${(e.loaded / (1024 * 1024)).toFixed(2)} MB / ${(e.total / (1024 * 1024)).toFixed(2)} MB` : `${(e.loaded / 1024).toFixed(2)} KB / ${(e.total / 1024).toFixed(2)} KB`;
+                const progress = Math.round((e.loaded / e.total) * 100);
+                fileProgress.style.width = `${progress}%`;
+                fileSize.innerText = formattedFileSize;
+            });
+            // Opening connection to the server API endpoint "" and sending the form data
+            if(fileType == 2) {
+                xhr.open("POST", "/admin/files/upload/videos", true);
+            }
+            else {
+                xhr.open("POST", "/admin/files/upload/images", true);
+            }
+            xhr.send(formData);
+            return xhr;
         }
     }
 
-    $('body').on("input", ".numeric", function(event) {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    });
-
-    /** form validation */
-    $('body').on("click", ".member_form_submit_btn", function() {
-        var is_error = false;
-        if ($.trim($('#club_name').val()) == "") {
-            toastr["error"]("Club name can't be blank");
-            is_error = true;
-        } else if ($.trim($('#name').val()) == "") {
-            toastr["error"]("Member name can't be blank");
-            is_error = true;
-        } else if ($.trim($('#email').val()) == "") {
-            toastr["error"]("Member email can't be blank");
-            is_error = true;
-        } else if (!validateEmail($("#email").val())) {
-            toastr["error"]("Member email not valid");
-            is_error = true;
-        } else if ($.trim($('#contact').val()) == "") {
-            toastr["error"]("Member contact no. can't be blank");
-            is_error = true;
-        } else if ($('#contact').val().length < 10) {
-            toastr["error"]("Member contact no. must be 10 digit long");
-            is_error = true;
-        } else if ($.trim($('#dob').val()) == "") {
-            toastr["error"]("Member date of birth can't be blank");
-            is_error = true;
-        } else if (!validatedate($.trim($("#dob").val()))) {
-            toastr["error"]("Member date of birth not valid");
-            is_error = true;
-        } else if ($.trim($('#anniversary_date').val()) == "") {
-            toastr["error"]("Member anniversary can't be blank");
-            is_error = true;
-        } else if (!validatedate($.trim($("#anniversary_date").val()))) {
-            toastr["error"]("Member anniversary not valid");
-            is_error = true;
-        } else if ($.trim($('#spouse_name').val()) == "") {
-            toastr["error"]("Spouse name can't be blank");
-            is_error = true;
-        } else if ($.trim($('#spouse_email').val()) == "") {
-            toastr["error"]("Spouse email can't be blank");
-            is_error = true;
-        } else if (!validateEmail($("#spouse_email").val())) {
-            toastr["error"]("Spouse email not valid");
-            is_error = true;
-        } else if ($.trim($('#spouse_contact').val()) == "") {
-            toastr["error"]("Spouse contact no. can't be blank");
-            is_error = true;
-        } else if ($('#spouse_contact').val().length < 10) {
-            toastr["error"]("Spouse contact no. must be 10 digit long");
-            is_error = true;
-        } else if ($.trim($('#spouse_dob').val()) == "") {
-            toastr["error"]("Spouse date of birth can't be blank");
-            is_error = true;
-        } else if (!validatedate($.trim($("#spouse_dob").val()))) {
-            toastr["error"]("Spouse date of birth not valid");
-            is_error = true;
+    $("#folderNameSelect").on('change', function(){
+        let folder_name = $(this).val().trim();
+        if(folder_name) {
+            $("#folderNameInput").val(folder_name);
+            $(".file-uploader").show();
         }
-        if (is_error == false) {
-            $('.member_form_submit_btn').attr("disabled", "disabled");
-            $('.btn-cancel').attr("disabled", "disabled");
-            $('.member_form_submit_btn').html('<i class="fa fa-spinner fa-spin"></i> Saving...');
-            $("#member_form").submit();
-        } else
-            return false;
-
-    });
-    /** end */
-
-    /** csv form validation */
-    $('body').on("click", ".member_csv_submit_btn", function() {
-        var is_error = false;
-        if ($.trim($('.csv_file_input').val()) == "") {
-            toastr["error"]("CSV file can't be blank");
-            is_error = true;
-        }
-
-        if (is_error == false) {
-            $('.member_csv_submit_btn').attr("disabled", "disabled");
-            $('.btn-cancel').attr("disabled", "disabled");
-            $('.member_csv_submit_btn').html('<i class="fa fa-spinner fa-spin"></i> Uploading...');
-            $("#member_csv_form").submit();
-        } else
-            return false;
-    });
-    /** end */
-
-    $('form#file_form').on("change", "#type", function() {
-        if ($('#type').val() == 1)
-            $('#adv_section').removeClass('hidden');
         else {
-            $('#adv_section').addClass('hidden');
-            $('#active_from, #active_to').val("");
+            $("#folderNameInput").val(folder_name);
+            $(".file-uploader").hide();
         }
     });
 
-    /** file form validation */
-    $('body').on("click", ".file_submit_btn", function() {
-        var is_error = false;
-        let img_url = "";
-        if ($('#img_url').length)
-            img_url = $('#img_url').val();
-        if ($.trim($('.file_input').val()) == "" && img_url == "") {
-            toastr["error"]("File can't be blank");
-            is_error = true;
+    $("#folderNameInput").on('keyup change', function(){
+        let folder_name = $(this).val().trim();
+        if(folder_name) {
+            $(".file-uploader").show();
         }
-        // image update
-        if (img_url != "" && $.trim($('.file_input').val()) != "")
-            $('#img_url').remove();
-
-        if (is_error == false) {
-            $('.file_submit_btn').attr("disabled", "disabled");
-            $('.btn-cancel').attr("disabled", "disabled");
-            $('.file_submit_btn').html('<i class="fa fa-spinner fa-spin"></i> Uploading...');
-            $("#file_form").submit();
-        } else
-            return false;
-    });
-    /** end */
-
-    $('body').on("click", ".copy_url", function() {
-        copyTextToClipboard($(this).html());
-    });
-
-    function copyTextToClipboard(text) {
-        var textArea = document.createElement("textarea");
-        textArea.style.position = 'fixed';
-        textArea.style.top = 0;
-        textArea.style.left = 0;
-        textArea.style.width = '2em';
-        textArea.style.height = '2em';
-        textArea.style.padding = 0;
-        textArea.style.border = 'none';
-        textArea.style.outline = 'none';
-        textArea.style.boxShadow = 'none';
-        textArea.style.background = 'transparent';
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            var successful = document.execCommand('copy');
-            toastr.options.timeOut = "5000";
-            toastr.options.closeButton = true;
-            toastr["info"]("Copied: " + text);
-        } catch (err) {
-            console.log('Oops, unable to copy');
+        else {
+            $(".file-uploader").hide();
         }
-        document.body.removeChild(textArea);
-    }
-
-    /** mail form validation */
-    $('body').on("click", ".mail_template_submit_btn", function() {
-        var is_error = false;
-        if ($.trim(tinymce.activeEditor.getContent()) == "") {
-            toastr["error"]("Mail template can't be blank");
-            is_error = true;
-        } else if ($.trim($('#mail_from').val()) == "") {
-            toastr["error"]("From email can't be blank");
-            is_error = true;
-        } else if (!validateEmail($("#mail_from").val())) {
-            toastr["error"]("From email not valid");
-            is_error = true;
-        }
-
-        if (is_error == false) {
-            $('.mail_template_submit_btn').attr("disabled", "disabled");
-            $('.btn-cancel').attr("disabled", "disabled");
-            $('.mail_template_submit_btn').html('<i class="fa fa-spinner fa-spin"></i> Saving...');
-            $("#mail_template_form").submit();
-        } else
-            return false;
-    });
-    /** end */
-
-    /** mail form validation */
-    $('body').on("click", ".mail_setting_submit_btn", function() {
-        var is_error = false;
-        if ($.trim($('#name_from').val()) == "") {
-            toastr["error"]("From name can't be blank");
-            is_error = true;
-        } else if ($.trim($('#subject').val()) == "") {
-            toastr["error"]("Subject can't be blank");
-            is_error = true;
-        } else if ($.trim($('#mail_from').val()) == "") {
-            toastr["error"]("From email can't be blank");
-            is_error = true;
-        } else if (!validateEmail($("#mail_from").val())) {
-            toastr["error"]("From email not valid");
-            is_error = true;
-        } else if ($.trim($('#reply_to').val()) != "" && !validateEmail($("#reply_to").val())) {
-            toastr["error"]("Reply to email not valid");
-            is_error = true;
-        } else if ($.trim($('#cc').val()) != "" && !validateEmail($("#cc").val())) {
-            toastr["error"]("CC email not valid");
-            is_error = true;
-        } else if ($.trim($('#bcc').val()) != "" && !validateEmail($("#bcc").val())) {
-            toastr["error"]("Bcc email not valid");
-            is_error = true;
-        }
-
-        if (is_error == false) {
-            $('.mail_setting_submit_btn').attr("disabled", "disabled");
-            $('.btn-cancel').attr("disabled", "disabled");
-            $('.mail_setting_submit_btn').html('<i class="fa fa-spinner fa-spin"></i> Saving...');
-            $("#mail_setting_form").submit();
-        } else
-            return false;
-    });
-    /** end */
-
-    /** mail form validation */
-    $('body').on("click", ".modal_password_change_btn", function() {
-        var is_error = false;
-        if ($.trim($('#password').val()) == "") {
-            toastr["error"]("Password can't be blank");
-            is_error = true;
-        } else if ($.trim($('#re_password').val()) == "") {
-            toastr["error"]("Re enter password can't be blank");
-            is_error = true;
-        } else if ($.trim($('#password').val()) != $.trim($('#re_password').val())) {
-            toastr["error"]("Password & re enter password doesn't match");
-            is_error = true;
-        }
-
-
-        if (is_error == false) {
-            $('.modal_password_change_btn').attr("disabled", "disabled");
-            $('.btn-cancel').attr("disabled", "disabled");
-            $('.modal_password_change_btn').html('<i class="fa fa-spinner fa-spin"></i> Saving...');
-            $("#change_password_form").submit();
-        } else
-            return false;
-    });
-    /** end */
-    //send mail manually
-    $("body").on("click", "#sendMailBg", function() {
-        $.ajax({
-            url: window.location.origin + "/admin/send/manually/mail",
-            type: "POST",
-            dataType: "json",
-            data: {},
-            async: true,
-            beforeSend: function(xhr) {
-                toastr["info"]("Mail sending in background, it takes some time please wait.");
-            },
-            success: function(data) {
-                toastr["info"]("Mail successfully sent");
-                window.location.reload();
-                return true;
-            }
-        });
     });
 
-    $("body").on("click", ".mail_template_edit_btn", function() {
-        $("#preview_mail_template_div").slideUp(300);
-        $("#edit_mail_template_div").slideDown(700);
-    });
+/** file uploader js end */
 });

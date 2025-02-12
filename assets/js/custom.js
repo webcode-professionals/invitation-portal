@@ -110,6 +110,12 @@ $(document).ready(function() {
 
 	setTimeout(function () {
 	    $('.advBanner').show();
-    }, 15000);
+    }, 20000);
+	setTimeout(function () {
+	    $('.advBanner').hide();
+    }, 120000);
+	$('.close-cross-btn').on('click', function() {
+		$('.advBanner').hide();
+	});
 });
 /* end preloader */

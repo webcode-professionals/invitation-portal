@@ -25,3 +25,18 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###>portfolio images ###
+/public/images/portfolio/*
+###<portfolio images ###
+
+###>team images ###
+/public/images/team/*
+###<team images ###
+
+###>shared files ###
+/public/shared_files/*
+###<shared files ###
+
+/.env
+/public/js/sfinv_en.js

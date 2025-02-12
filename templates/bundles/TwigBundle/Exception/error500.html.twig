@@ -1,0 +1,8 @@
+{# templates/bundles/TwigBundle/Exception/error500.html.twig #}
+{% extends 'dashboard.base.html.twig' %}
+
+{% block body %}
+    <h1>Oh no, Something got wrong!</h1>
+    <p>Something is broken. Please let us know what you were doing when this error occured. we will fix it as soon as possible. Sorry for any inconvenience caused.</p>
+    <p> <a href="{{ path('app_dashboard') }}" class="btn btn-info">return to the dashboard</a></p>
+{% endblock %}

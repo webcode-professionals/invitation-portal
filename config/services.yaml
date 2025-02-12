@@ -10,6 +10,8 @@ parameters:
     app_email: '%env(APP_EMAIL)%'
     app_version: '%env(APP_VERSION)%'
     admin_email: '%env(ADMIN_EMAIL)%'
+    portfolio_image_path: '%env(PORTFOLIO_IMAGE_PATH)%'
+    file_upload_path: '%env(FILE_UPLOAD_PATH)%'
 services:
     # default configuration for services in *this* file
     _defaults:

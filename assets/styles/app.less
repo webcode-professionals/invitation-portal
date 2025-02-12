@@ -149,21 +149,28 @@
 
 .advBanner {
     position: fixed;
-    bottom: 20px;
+    bottom: 5.5rem;
     left: 20px;
 	background-color: @background_color_10;
 	width: 20rem;
 	height: 20rem;
     z-index: 5;
-	// text-align: center;
-    padding: 10px;
+    padding: 0.5rem;
 	display: none;
 	color: @color_2;
 	border-color: @color_8;
 	border-radius: 5px;
 	p, a {
 		color: @color_2;
-		font-size: 18px;
+		font-size: 1.1rem;
+	}
+	.close-cross-btn {
+		position: absolute;
+		right: 10px;
+		top: 0px;
+		cursor: pointer;
+		font-size: 1rem;
+		color: @color_2;
 	}
 }
 
@@ -780,6 +787,9 @@ header.fixed {
 }
 .align-center {
 	text-align: center;
+}
+.align-content-center {
+	align-content: center;
 }
 .packageList {
 	margin-bottom: 50px;

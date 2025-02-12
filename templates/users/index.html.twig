@@ -74,7 +74,7 @@
                             <div class="panel-heading">
                                 <div class="panel-title" align="right">
                                     <span class="dropdown me-6">
-                                        <button href="#" class="dropdown-toggle btn btn-info" id="bulk_btn" disabled="disabled" data-toggle="dropdown">
+                                        <button href="#" class="dropdown-toggle btn btn-default" id="bulk_btn" disabled="disabled" data-toggle="dropdown">
                                             <i class="fa fa-cog"></i> Bulk Action 
                                         </button>
                                         <ul class="dropdown-menu">
@@ -93,7 +93,7 @@
                                                 <th><input type="checkbox" class="all_select" style="cursor:pointer;"></th>
                                                 <th>Id</th>
                                                 <th>Email</th>
-                                                {# <th>Role</th> #}
+                                                <th>Role</th>
                                                 <th>Verified</th>
                                                 <th>Approved</th>
                                                 <th>Action</th>
@@ -106,7 +106,13 @@
                                                     <td><input type="checkbox" class="select_items" name="ids[]" value="{{ webUser.id }}" style="cursor:pointer;"></td>
                                                     <td>{{ webUser.id }}</td>
                                                     <td>{{ webUser.email }}</td>
-                                                    {# <td>{{ webUser.roles[0] }}</td> #}
+                                                    <td>
+                                                        {% if "ROLE_CO_ADMIN" in webUser.roles %}
+                                                            Co-Admin
+                                                        {% elseif "ROLE_USER" in webUser.roles %}
+                                                            User
+                                                        {% endif %}
+                                                    </td>
                                                     <td>
                                                         {% if webUser.isVerified %}
                                                             <span class="label label-success">Email verified</span>
@@ -127,8 +133,13 @@
                                                                 <i class="fa fa-ellipsis-h fa-2x"></i>
                                                             </a>
                                                             <ul class="dropdown-menu notifications">
-                                                                <li><a href="{{ path('app_users_status', {id: webUser.id}) }}" data-id="{{ webUser.id }}" class="status-item">{% if webUser.isApproved %}<i class="lnr lnr-cross"></i>Disapprove{% else %}<i class="fa fa-check"></i>Approve{% endif %}</a></li>
-                                                                <li><a href="#" data-id="{{ webUser.id }}" class="delete-item list-action" data-for="user" data-type="delete" data-toggle="modal" data-target="#modal-notification"><i class="lnr lnr lnr-trash"></i>Delete</a></li>
+                                                                {% if is_granted('ROLE_CO_ADMIN') and "ROLE_CO_ADMIN" in webUser.roles %}
+                                                                    <li><a href="#"><i class="fa fa-ban"></i>No action</a></li>
+                                                                {% else %}
+                                                                    <li><a href="{{ path('app_users_status', {id: webUser.id}) }}" data-id="{{ webUser.id }}" class="status-item">{% if webUser.isApproved %}<i class="lnr lnr-cross"></i>Disapprove{% else %}<i class="fa fa-check"></i>Approve{% endif %}</a></li>
+                                                                    <li><a href="#" data-id="{{ webUser.id }}" class="delete-item list-action" data-for="user" data-type="delete" data-toggle="modal" data-target="#modal-notification"><i class="lnr lnr lnr-trash"></i>Delete</a></li>
+                                                                    <li><a href="{{ path('app_users_role', {id: webUser.id}) }}" data-id="{{ webUser.id }}" class="status-item">{% if "ROLE_CO_ADMIN" in webUser.roles %}<i class="lnr lnr-chevron-down-circle"></i>Make User{% elseif "ROLE_USER" in webUser.roles %}<i class="lnr lnr-chevron-up-circle"></i>Make Co-Admin{% endif %}</a></li>
+                                                                {% endif %}
                                                             </ul>
                                                         </li>
                                                     </td>

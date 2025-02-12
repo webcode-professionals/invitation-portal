@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 
 final class ReactappController extends AbstractController
 {
-    #[Route('/{reactRouting}', name: 'app_reactapp', requirements: ['reactRouting'=>'^(?!security|dashboard|api).+'], defaults: ['reactRouting'=> null])]
+    #[Route('/{reactRouting}', name: 'app_reactapp', requirements: ['reactRouting'=>'^(?!security|admin|api).+'], defaults: ['reactRouting'=> null])]
     public function index(): Response
     {
         return $this->render('reactapp/index.html.twig', [
@@ -26,10 +26,10 @@ final class ReactappController extends AbstractController
     public function getPortfolioImage(): Response
     {
         $portfolioImages = [];
-        $portfolioPath = "../public/images/portfolio/";
+        $portfolioPath = $this->getParameter('portfolio_image_path')."/";
         if (file_exists($portfolioPath)) {
             $portfolioImages = glob($portfolioPath . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-            $portfolioImages = json_encode(array_map(array($this, 'replaceLocalUrl'), $portfolioImages));
+            $portfolioImages = json_encode(array_map(array($this, 'replacePortfolioPath'), $portfolioImages));
         }
         return new JsonResponse($portfolioImages, Response::HTTP_OK, ['Content-Type'=> 'application/json'], true);
     }
@@ -81,7 +81,7 @@ final class ReactappController extends AbstractController
         return new JsonResponse("Mail Sent", Response::HTTP_OK, ['Content-Type'=> 'application/json'], true);
     }
 
-    public function replaceLocalUrl($value) {
-        return str_replace("../public/images/","", $value);
+    public function replacePortfolioPath($value) {
+        return str_replace($this->getParameter('portfolio_image_path').'/',"", $value);
     }
 }

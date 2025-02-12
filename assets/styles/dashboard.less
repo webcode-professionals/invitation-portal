@@ -250,7 +250,7 @@
 	-webkit-align-items: center;
 	-ms-flex-align: center;
 	align-items: center;
-	background: none repeat scroll 0 0 #ffffff;
+	background: none repeat scroll 0 0 @background_color_4;
 }
 .sk-spinner-wave.sk-spinner {
 	width: 50px;
@@ -679,8 +679,20 @@
     padding-left: 3rem !important;
 }
 
+.color-white {
+    color: @color_7 !important;
+}
+
+.highlight-color {
+    color: @color_4 !important;
+}
+
 .cursor-pointer {
     cursor: pointer;
+}
+
+.cursor-zoom-in {
+    cursor: zoom-in;
 }
 
 .form-check {
@@ -3923,3 +3935,205 @@ td {
         width: 100%;
     }
 }
+
+.folder-choose {
+	width: 100%;
+    max-width: 500px;
+    padding-bottom: 5px;
+	background: @background_color_4;
+	border-radius: 5px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+	.folder-header {
+		display: flex;
+		padding: 20px;
+		background: #EEF1FB;
+		align-items: center;
+		border-radius: 5px 5px 0 0;
+		justify-content: space-between;
+        .folder-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+	}
+}
+
+/* file uploader less start */
+.file-uploader {
+    display: none;
+	width: 100%;
+    max-width: 500px;
+    padding-bottom: 5px;
+	background: @background_color_4;
+	border-radius: 5px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+	.uploader-header {
+		display: flex;
+		padding: 20px;
+		background: #EEF1FB;
+		align-items: center;
+		border-radius: 5px 5px 0 0;
+		justify-content: space-between;
+	}
+	.file-list {
+		list-style: none;
+		width: 100%;
+		padding-bottom: 10px;
+		max-height: 240px;
+		overflow-y: auto;
+		scrollbar-color: #999 transparent;
+		scrollbar-width: thin;
+		&:has(li) {
+			padding: 20px;
+		}
+	}
+	.file-upload-box {
+		margin: 10px 20px 20px;
+		border-radius: 5px;
+		min-height: 80px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: 2px dashed @border_left_color_1;
+		transition: all 0.2s ease;
+		.box-title {
+			font-size: 1.5rem;
+			font-weight: 500;
+			color: @color_13;
+		}
+	}
+	.file-upload-box.active {
+		border: 2px solid @border_left_color_1;
+		background: #F3F6FF;
+		.box-title {
+			pointer-events: none;
+		}
+	}
+}
+.uploader-header {
+	.uploader-title {
+		font-size: 1.2rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+	.file-completed-status {
+		font-size: 1rem;
+		font-weight: 500;
+		color: @color_2;
+	}
+}
+.file-list {
+	.file-item {
+		display: flex;
+		gap: 14px;
+		margin-bottom: 22px;
+		&:last-child {
+			margin-bottom: 0px;
+		}
+		.file-extension {
+			height: 50px;
+			width: 50px;
+			color: @color_7;
+			display: flex;
+			text-transform: uppercase;
+			align-items: center;
+			justify-content: center;
+			border-radius: 15px;
+			background: @background_color_7;
+		}
+		.file-content-wrapper {
+			flex: 1;
+		}
+		.file-content {
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+		}
+		.file-name {
+			font-size: 1rem;
+			font-weight: 600;
+		}
+		.file-info {
+			display: flex;
+			gap: 5px;
+			small {
+				color: @color_1;
+				margin-top: 5px;
+				display: block;
+				font-size: 0.9rem;
+				font-weight: 500;
+			}
+			.file-status {
+				color: @color_4;
+			}
+		}
+		.cancel-button {
+			align-self: center;
+			border: none;
+			outline: none;
+			background: none;
+			cursor: pointer;
+			font-size: 1.4rem;
+			&:hover {
+				color: @color_10;
+			}
+		}
+		.file-progress-bar {
+			width: 100%;
+			height: 3px;
+			margin-top: 10px;
+			border-radius: 30px;
+			background: #d9d9d9;
+			.file-progress {
+				width: 0%;
+				height: inherit;
+				border-radius: inherit;
+				background: @background_color_7;
+			}
+		}
+	}
+}
+.file-upload-box {
+	.box-title {
+		.file-browse-button {
+			color: @color_4;
+			cursor: pointer;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+    .file-browse-input {
+        display: none;
+    }
+}
+/* file uploader less end */
+
+/* divider with text */
+
+.hr-text {
+	border: 0;
+	line-height: 1em;
+	position: relative;
+	text-align: center;
+	height: 1.5em;
+	font-size: 14px;
+	&::before {
+		content: "";
+		background: linear-gradient(to right, transparent, @background_color_7, transparent);
+		position: absolute;
+		left: 0;
+		top: 50%;
+		width: 100%;
+		height: 1px;
+	}
+	&::after {
+		content: attr(data-content);
+		position: relative;
+		padding: 0 7px;
+		line-height: 1.5em;
+		color: @color_4;
+		background-color: @background_color_4;
+	}
+}
+/* divider with text end*/

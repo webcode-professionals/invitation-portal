@@ -12,7 +12,8 @@
             <div id="navbar-menu">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown" style="text-align:right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-user"></i> <span>Howdy {% if is_granted('ROLE_ADMIN') %}Admin!{% elseif is_granted('ROLE_USER') %}User!{% endif %}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        {# Howdy {% if is_granted('ROLE_ADMIN') %}Admin!{% elseif is_granted('ROLE_CO_ADMIN') %}Co-Admin!{% elseif is_granted('ROLE_USER') %}User!{% endif %} #}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-user"></i> <span>{{ app.user.email }}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ path('app_logout') }}"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
                             <li><a id="backToHome" class="cursor-pointer"><i class="lnr lnr-arrow-left"></i> <span>Back to homepage</span></a></li>
@@ -31,22 +32,48 @@
                 <ul class="nav">
                     <li><a href="{{ path('app_dashboard') }}" {% if 'dashboard' in currentPath %}class="active"{% endif %}><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
                     {% if app.user.isApproved %}
-                        {% if is_granted('ROLE_ADMIN') %}
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CO_ADMIN') %}
+                            
                             <li><a href="{{ path('app_users') }}" {% if 'users' in currentPath %}class="active"{% endif %}><i class="lnr lnr-users"></i> <span>Users</span></a></li>
+                            <li>
+                                <a href="#subPages1" data-toggle="collapse" class="{% if 'files' in currentPath %}active{% else %}collapsed{% endif %}"><i class="lnr lnr-upload"></i> <span>Upload Files</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                                <div id="subPages1" class="collapse {% if 'files' in currentPath %}in{% endif %}">
+                                    <ul class="nav">
+                                        <li><a href="{{ path('app_files_images') }}" {% if 'files' in currentPath and 'images' in currentPath %}class="active"{% endif %}><i class="fa fa-file-image-o"></i> <span>Images</span></a></li>
+                                        <li><a href="{{ path('app_files_videos') }}" {% if 'files' in currentPath and 'videos' in currentPath %}class="active"{% endif %}><i class="fa fa-file-video-o"></i> <span>Videos</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
                         {% endif %}
-                        {# <li><a href="{{ path('app_mail_template') }}" {% if 'mail-template' in currentPath %}class="active"{% endif %}><i class="fa fa-envelope"></i> <span>Mail Templates</span></a></li>
-                        <li><a href="{{ path('app_files') }}" {% if 'files' in currentPath %}class="active"{% endif %}><i class="lnr lnr-file-add"></i> <span>Files</span></a></li>
-                        <li><a href="{{ path('app_mail_setting') }}" {% if 'mail' in currentPath %}class="active"{% endif %}><i class="lnr lnr-cog"></i> <span>Mail setting</span></a></li> #}
-                        {# <li>
-                            <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Pages</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                            <div id="subPages" class="collapse ">
+                        <li>
+                            <a href="#subPages2" data-toggle="collapse" class="{% if 'folders' in currentPath and 'images' in currentPath %}active{% else %}collapsed{% endif %}"><i class="fa fa-file-image-o"></i> <span>Images</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages2" class="collapse {% if 'folders' in currentPath and 'images' in currentPath %}in{% endif %}">
                                 <ul class="nav">
-                                    <li><a href="page-profile.html" class="">Profile</a></li>
-                                    <li><a href="page-login.html" class="">Login</a></li>
-                                    <li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+                                    {% if imagesFolders %}
+                                        {% for folder in imagesFolders %}
+                                            <li><a href="{{ path('app_folder_files_images', {folderName: folder.name}) }}" {% if 'images' in currentPath and folder.name in currentPath %}class="active"{% endif %}><i class="fa fa-folder"></i> {{ folder.name }}</a></li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li><a href="#" class=""><i class="fa fa-ban"></i> No Folder</a></li>
+                                    {% endif %}
                                 </ul>
                             </div>
-                        </li> #}
+                        </li>
+                        <li>
+                            <a href="#subPages3" data-toggle="collapse" class="{% if 'folders' in currentPath and 'videos' in currentPath %}active{% else %}collapsed{% endif %}"><i class="fa fa-file-video-o"></i> <span>Videos</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages3" class="collapse {% if 'folders' in currentPath and 'videos' in currentPath %}in{% endif %}">
+                                <ul class="nav">
+                                    {% if videosFolders %}
+                                        {% for folder in videosFolders %}
+                                            <li><a href="{{ path('app_folder_files_videos', {folderName: folder.name}) }}" {% if 'videos' in currentPath and folder.name in currentPath %}class="active"{% endif %}><i class="fa fa-folder"></i> {{ folder.name }}</a></li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li><a href="#" class=""><i class="fa fa-ban"></i> No Folder</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </li>
                         {# <li><a href="icons.html" class=""><i class="lnr lnr-cog"></i> <span>Settings</span></a></li> #}
                     {% endif %}
                 </ul>

@@ -1,0 +1,76 @@
+{% extends 'dashboard/layout.html.twig' %}
+{% block title %}Images -
+	{{ parent() }}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+{% endblock %}
+{% block body_id 'images_folders_page' %}
+{% block body %}
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <h3 class="page-title">Images</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    You are viewing images from <span class="highlight-color">{{ folderName }}</span> folder
+                                    {% if sharedFiles %}
+                                        <a href="{{ path('app_download_folder', {fileType: 'images', folderName: folderName}) }}" class="btn btn-primary ms-5 color-white"><i class="fa fa-download"></i> Download Folder</a>
+                                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CO_ADMIN') %}
+                                            <a href="{{ path('app_delete_folder', {fileType: 'images', folderName: folderName}) }}" class="btn btn-danger ms-5 color-white"><i class="fa fa-download"></i> Delete Folder</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                {% if sharedFiles %}
+                                    <table id="files_images_table" class="table table-striped table-bordered nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>image</th>
+                                                <th>Name</th>
+                                                <th>Download</th>
+                                                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CO_ADMIN') %}
+                                                    <th>Delete</th>
+                                                {% endif %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for sharedFile in sharedFiles %}
+                                                <tr>
+                                                    <td>{{ loop.index }}</td>
+                                                    <td>
+                                                        <a href="/{{ file_upload_path }}/{{ sharedFile }}" class="shared-image-box cursor-zoom-in">
+                                                            <img src="/{{ file_upload_path }}/{{ sharedFile }}" class="img-thumb">
+                                                        </a>
+                                                    </td>
+                                                    {% set trimmedPath = sharedFile|trim('images/' ~ folderName ~ '/', 'left') %}
+                                                    <td class="sharedFileName" data-folderName="{{ folderName }}" data-fileType="images" data-fileName="{{ trimmedPath }}">{{ trimmedPath }}</td>
+                                                    <td><a href="{{ path('app_download_files', {fileType: 'images', folderName: folderName, fileName: trimmedPath}) }}" data-fileType="images" data-folderName="{{ folderName }}" data-fileName="{{ trimmedPath }}"><i class="lnr lnr-download"></i></a></td>
+                                                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CO_ADMIN') %}
+                                                        <td><a href="{{ path('app_delete_files', {fileType: 'images', folderName: folderName, fileName: trimmedPath}) }}" data-fileType="images" data-folderName="{{ folderName }}" data-fileName="{{ trimmedPath }}"><i class="lnr lnr-trash"></i></a></td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% else %}
+                                    <h4 align="center">No images has been uploaded yet.</h4>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+{% endblock %}

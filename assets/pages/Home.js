@@ -7,6 +7,7 @@ import axios from 'axios';
 function Home() {
     var members = window.env.wed_family_members;
     var events = window.env.wed_events;
+    var testimonials = window.env.wed_testimonials;
     var updateTimer = () => {
         let future = Date.parse(window.env.wed_var21);
         let now = new Date();
@@ -166,33 +167,33 @@ function Home() {
                         <div className="carousel-indicators">
                             <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
                             <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                            <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                            <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                            {/* <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="2" aria-label="Slide 3"></button> */}
+                            {/* <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="3" aria-label="Slide 4"></button> */}
+                            {/* <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="4" aria-label="Slide 5"></button> */}
                         </div>
                         <div className="carousel-inner">
                             <div className="carousel-item active">
                                 <img src="images/slides/1.jpg" className="d-block w-100" alt="slide1" />
                                 <div className="carousel-caption d-none d-md-block">
-                                    <h3 data-animation="animated bounceInDown">First slide label</h3>
-                                    <h4 data-animation="animated bounceInUp">Some representative placeholder content for the first slide.</h4>
-                                </div>
-                            </div>
-                            <div className="carousel-item">
-                                <img src="images/slides/2.jpg" className="d-block w-100" alt="slide2" />
-                                <div className="carousel-caption d-none d-md-block">
-                                    <h3 data-animation="animated bounceInDown">Second slide label</h3>
-                                    <h4 data-animation="animated bounceInUp">Some representative placeholder content for the second slide.</h4>
+                                    <h3 data-animation="animated bounceInDown">{window.env.wed_person_name}</h3>
+                                    <h4 data-animation="animated bounceInUp">{window.env.wed_var1} {window.env.wed_var2}, {window.env.wed_var3}</h4>
                                 </div>
                             </div>
                             <div className="carousel-item">
                                 <img src="images/slides/3.jpg" className="d-block w-100" alt="slide3" />
                                 <div className="carousel-caption d-none d-md-block">
-                                    <h3 data-animation="animated bounceInDown">Third slide label</h3>
-                                    <h4 data-animation="animated bounceInUp">Some representative placeholder content for the third slide.</h4>
+                                    <h3 data-animation="animated bounceInDown">{window.env.wed_var4}</h3>
+                                    <h4 data-animation="animated bounceInUp">{window.env.wed_var5}</h4>
                                 </div>
                             </div>
-                            <div className="carousel-item">
+                            {/* <div className="carousel-item">
+                                <img src="images/slides/2.jpg" className="d-block w-100" alt="slide2" />
+                                <div className="carousel-caption d-none d-md-block">
+                                    <h3 data-animation="animated bounceInDown">Second slide label</h3>
+                                    <h4 data-animation="animated bounceInUp">Some representative placeholder content for the second slide.</h4>
+                                </div>
+                            </div> */}
+                            {/* <div className="carousel-item">
                                 <img src="images/slides/4.jpg" className="d-block w-100" alt="slide4" />
                                 <div className="carousel-caption d-none d-md-block">
                                     <h3 data-animation="animated bounceInDown">Forth slide label</h3>
@@ -205,7 +206,7 @@ function Home() {
                                     <h3 data-animation="animated bounceInDown">Fifth slide label</h3>
                                     <h4 data-animation="animated bounceInUp">Some representative placeholder content for the fifth slide.</h4>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         <button className="carousel-control-prev" type="button" data-bs-target="#carouselBanner" data-bs-slide="prev">
                             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -232,7 +233,7 @@ function Home() {
                 <section id="Bride_Groom">
                     <div className="container">
                         <div id="content24" data-section="content-24" className="row data-section">
-                            <div className="col-md-6">
+                            <div className="col-md-5">
                                 <img src="images/groom.jpg" alt="bride" className="img-middle img-fluid" />
                                 <div className="align-center">
                                     <h3>{window.env.wed_groom_name}</h3>
@@ -242,12 +243,12 @@ function Home() {
                                     <p>{window.env.wed_var15}</p>
                                 </div>
                             </div>
-                            {/* <div className="col-md-2">
-                                <div className="align-center">
+                            <div className="col-md-2 align-content-center">
+                                <div className="align-cente">
                                 <img src="images/phere.jpg" alt="phere" className="img-phere img-fluid" />
                                 </div>
-                            </div> */}
-                            <div className="col-md-6">
+                            </div>
+                            <div className="col-md-5">
                                 <img src="images/bride.jpg" alt="bride" className="img-middle img-fluid" />
                                 <div className="align-center">
                                     <h3>{window.env.wed_bride_name}</h3>
@@ -303,14 +304,13 @@ function Home() {
                     <div className="container">
                         <div className="row data-section" data-section="content-24">
                             <div className="col-md-6">
-                                <h3>Videos</h3>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
-                                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
+                                <h3>{window.env.wed_var30}</h3>
+                                <p>{window.env.wed_var31}</p>
+                                
                             </div>
                             <div className="col-md-6">
                                 <div className="embed-responsive embed-responsive-16by9">
-                                    <iframe className="embed-responsive-item" src="https://player.vimeo.com/video/146742515?badge=0" allowFullScreen=""></iframe>
+                                    <iframe className="embed-responsive-item" src={window.env.wed_var32} allowFullScreen=""></iframe>
                                 </div>
                             </div>
                         </div>
@@ -321,15 +321,15 @@ function Home() {
                 <section id="gallery" className="gallery section">
                     <div className="container-fluid">
                         <div className="section-header">
-                            <h2 className="wow fadeInDown animated">Gallery</h2>
-                            <p className="wow fadeInDown animated">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget risus vitae massa</p>
+                            <h2 className="wow fadeInDown animated">{window.env.wed_var33}</h2>
+                            <p className="wow fadeInDown animated">{window.env.wed_var34}</p>
                         </div>
                         <div className="row no-gutter">
                             {PortfolioImg.map((portImg, key) => {
                                 return (
                                     <div className="col-lg-3 col-md-6 col-sm-6 work" key={key}>
-                                        <a href={"images/" + portImg} className="work-box">
-                                            <img src={"images/" + portImg} alt="" />
+                                        <a href={"images/portfolio/" + portImg} className="work-box">
+                                            <img src={"images/portfolio/" + portImg} alt="" />
                                             <div className="overlay">
                                                 <div className="overlay-caption">
                                                     <p><span className="icon icon-magnifying-glass"></span></p>
@@ -340,7 +340,7 @@ function Home() {
                                 )
                             })}
                         </div>
-                        <div className="mt-5 text-center"><button onClick={loginBtn} className="btn">View more</button></div>
+                        <div className="mt-5 text-center"><button onClick={loginBtn} className="btn">{window.env.wed_var35}</button></div>
                     </div>
                 </section>
                 {/* gallery section -*/}
@@ -357,7 +357,7 @@ function Home() {
                                     return (
                                         <div className="col-md-3 col-sm-6" key={key}>
                                             <div className="person">
-                                                <img src={img_path + "/" + team.img_name} alt="" className="img-fluid" />
+                                                {team.img_name ? (<img src={img_path + "/" + team.img_name} alt="" className="img-fluid" />) : (<span></span>)}
                                                 <div className="person-content">
                                                     <h4>{team.name}</h4>
                                                     <p>{team.relation}</p>
@@ -375,46 +375,24 @@ function Home() {
                 <section id="testimonials" className="section testimonials no-padding">
                     <div className="container-fluid">
                         <div className="row no-gutter">
-                            <div className="flexslider">
-                                <ul className="slides">
-                                    <li>
-                                        <div className="col-md-12">
-                                            <blockquote>
-                                                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget risus vitae massa
-                                                    semper aliquam quis mattis consectetur adipiscing elit.." </p>
-                                                <p>Chris Mentsl</p>
-                                            </blockquote>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="col-md-12">
-                                            <blockquote>
-                                                <p>"Praesent eget risus vitae massa Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget risus vitae massa
-                                                    semper aliquam quis mattis consectetur adipiscing elit.." </p>
-                                                <p>Kristean velnly</p>
-                                            </blockquote>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="col-md-12">
-                                            <blockquote>
-                                                <p>"Consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget risus vitae massa
-                                                    semper aliquam quis mattis consectetur adipiscing elit.." </p>
-                                                <p>Markus Denny</p>
-                                            </blockquote>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="col-md-12">
-                                            <blockquote>
-                                                <p>"Vitae massa semper aliquam Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget risus vitae massa
-                                                    semper aliquam quis mattis consectetur adipiscing elit.." </p>
-                                                <p>John Doe</p>
-                                            </blockquote>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                            {window.env.wed_testimonials ? (
+                                <div className="flexslider">
+                                    <ul className="slides">
+                                        {testimonials.map((data, key) => {
+                                            return (
+                                                <li key={key}>
+                                                    <div className="col-md-12">
+                                                        <blockquote>
+                                                            <p> {data.description} </p>
+                                                            <p> {data.name} </p>
+                                                        </blockquote>
+                                                    </div>
+                                                </li>
+                                            )
+                                        })}
+                                    </ul>
+                                </div>
+                            ) : (<div className="text-center"><p>{window.env.wed_var29}</p></div>)}
                         </div>
                     </div>
                 </section>
@@ -439,8 +417,11 @@ function Home() {
                                 </form>
                             </div>
                             <div className="col-md-6 ps-5">
+                                <p>Create your own invitation website.</p>
+                                <p>At just $20/- or ₹1499/- for 60 days and it will be ready in 30 minutes.</p>
+                                <p className='mb-5'>Share your photographs with your loved ones at just additional cost of $6/- or ₹499/- per month.</p>
                                 <h3>OUR POINT OF CONTACT</h3>
-                                <address className="mt-5">
+                                <address className="mt-3">
                                     <p> <i className="fa fa-phone"></i> +91 9464528225</p>
                                     <p> <i className="fa fa-phone"></i> +1 (672) 833-8625</p>
                                     <p> <i className="fa fa-envelope"></i> contact@itdevs.in</p>
@@ -483,11 +464,12 @@ function Home() {
                     <button onClick={topHome} className="topHome"><i className="fa fa-chevron-up fa-2x"></i></button>
                 </footer>
                 <div className='advBanner'>
-                    <p>Create your own wedding invitation website.</p>
-                    <p>At just $20/- or ₹1499/- for 60 days in 30 minutes.</p>
-                    <p>Share your wedding photographs with your loved ones at just additional cost of $6/- or ₹499/- per month</p>
+                    <span className='close-cross-btn'>×</span>
+                    <p>Create your own invitation website.</p>
+                    <p>At just $20/- or ₹1499/- for 60 days and it will be ready in 30 minutes.</p>
+                    <p>Share your photographs with your loved ones at just additional cost of $6/- or ₹499/- per month.</p>
                     <p>Contact us via email <a href='mailto:contact@itdevs.in'>contact@itdevs.in</a></p>
-                    <p className='text-center'><a className="btn" href="#contact">Contact us</a></p>
+                    <p className='text-center'><a className="btn" href='mailto:contact@itdevs.in'>Contact us</a></p>
                 </div>
             </div>
         </Layout>

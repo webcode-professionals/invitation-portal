@@ -1,0 +1,75 @@
+{% extends 'dashboard/layout.html.twig' %}
+{% block title %}Files -
+	{{ parent() }}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+{% endblock %}
+{% block body_id 'files_page' %}
+{% block body %}
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <h3 class="page-title">Images</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-6">
+                                    <div class="folder-choose">
+                                        <div class="folder-header">
+                                            <h2 class="folder-title">Choose folder where you want to store your images <span class="required-field">*</span></h2>
+                                        </div>
+                                        {% if imagesFolders %}
+                                        <div class="p-3">
+                                            <label for="folderNameSelect">Folder name</label>
+                                            <select class="form-control" id="folderNameSelect">
+                                                <option></option>
+                                                {% for folder in imagesFolders %}
+                                                    <option val="{{ folder.name }}">{{ folder.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <hr class="hr-text gradient" data-content="OR">
+                                        {% else %}
+                                            <div class="p-3"><p>No folder created, please create one</p></div>
+                                        {% endif %}
+                                        <div class="p-3">
+                                            <label for="folderNameInput">New folder name</label>
+                                            <input type="text" class="form-control" id="folderNameInput">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="file-uploader">
+                                        <div class="uploader-header">
+                                            <h2 class="uploader-title">Upload your images</h2>
+                                            <h4 class="file-completed-status"></h4>
+                                            <input type="hidden" id="file_type" value="1">
+                                        </div>
+                                        <ul class="file-list"></ul>
+                                        <div class="file-upload-box">
+                                            <h2 class="box-title">
+                                            <span class="file-instruction">Drag images here or</span>
+                                            <span class="file-browse-button">browse</span>
+                                            </h2>
+                                            <input class="file-browse-input" type="file" accept=".png,.jpg,.jpeg,.gif" multiple hidden>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+{% endblock %}
