@@ -19,11 +19,11 @@
                             </div>
                             <div class="col-md-6 text-right">
                                 <p>{{ app.user.email }} 
-                                    {% if app.user.isVerified %}
+                                    {# {% if app.user.isVerified %}
                                         <span class="label label-success">Email verified</span>
                                     {% else %}
                                         <span class="label label-warning">Email not verified</span>
-                                    {% endif %}
+                                    {% endif %} #}
                                 </p>
                                 <p>User Status: 
                                     {% if app.user.isApproved %}

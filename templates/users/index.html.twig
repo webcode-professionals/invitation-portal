@@ -93,8 +93,9 @@
                                                 <th><input type="checkbox" class="all_select" style="cursor:pointer;"></th>
                                                 <th>Id</th>
                                                 <th>Email</th>
+                                                <th>Name</th>
                                                 <th>Role</th>
-                                                <th>Verified</th>
+                                                {# <th>Verified</th> #}
                                                 <th>Approved</th>
                                                 <th>Action</th>
                                             </tr>
@@ -104,8 +105,10 @@
                                                 {% if "ROLE_ADMIN" not in webUser.roles %}
                                                 <tr>
                                                     <td><input type="checkbox" class="select_items" name="ids[]" value="{{ webUser.id }}" style="cursor:pointer;"></td>
-                                                    <td>{{ webUser.id }}</td>
+                                                    {# <td>{{ webUser.id }}</td> #}
+                                                    <td>{{ loop.index }}</td>
                                                     <td>{{ webUser.email }}</td>
+                                                    <td>{{ webUser.fullName }}</td>
                                                     <td>
                                                         {% if "ROLE_CO_ADMIN" in webUser.roles %}
                                                             Co-Admin
@@ -113,13 +116,13 @@
                                                             User
                                                         {% endif %}
                                                     </td>
-                                                    <td>
+                                                    {# <td>
                                                         {% if webUser.isVerified %}
                                                             <span class="label label-success">Email verified</span>
                                                         {% else %}
                                                             <span class="label label-warning">Email not verified</span>
                                                         {% endif %}
-                                                    </td>
+                                                    </td> #}
                                                     <td>
                                                         {% if webUser.isApproved %}
                                                             <span class="status label label-success">Approved</span>

@@ -100,7 +100,8 @@
             const current_year = "{{ 'now'|date('Y') }}";
             const img_path = "{{ asset('images') }}";
             const app_url = "{{ app_url }}";
-            {# const image_upload_path = "{{ image_upload_path }}"; #}
+            const file_upload_path = "{{ file_upload_path }}";
+            const login_as = {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CO_ADMIN') %}"admin";{% else %}"user";{% endif %}
         </script>
 	    <!-- END WRAPPER -->
     </body>

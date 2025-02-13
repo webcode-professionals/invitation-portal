@@ -61,6 +61,7 @@ $(document).ready(function() {
             "columnDefs": [
                 { "searchable": false, "orderable": false, "targets": 1 },
                 { "searchable": false, "orderable": false, "targets": 3 },
+                login_as=="admin"?{ "searchable": false, "orderable": false, "targets": 4 }:'',
                 // { "searchable": false, "orderable": false, "targets": 4 },
             ],
             "order": [
@@ -75,6 +76,7 @@ $(document).ready(function() {
             fixedHeader: true,
             "columnDefs": [
                 { "searchable": false, "orderable": false, "targets": 2 },
+                login_as=="admin"?{ "searchable": false, "orderable": false, "targets": 3 }:'',
                 // { "searchable": false, "orderable": false, "targets": 3 },
             ],
             "order": [
@@ -229,37 +231,43 @@ $(document).ready(function() {
                 const uniqueIdentifier = Date.now() + index;
                 const fileItemHTML = createFileItemHTML(file, uniqueIdentifier);
                 if (fileItemHTML) {
-                    // Inserting each file item into file list
-                    fileList.insertAdjacentHTML("afterbegin", fileItemHTML);
-                    const currentFileItem = document.querySelector(`#file-item-${uniqueIdentifier}`);
-                    const cancelFileUploadButton = currentFileItem.querySelector(".cancel-button");
-                    const xhr = handleFileUploading(file, uniqueIdentifier);
-                    // Update file status text and change color of it 
-                    const updateFileStatus = (status, color) => {
-                        currentFileItem.querySelector(".file-status").innerText = status;
-                        currentFileItem.querySelector(".file-status").style.color = color;
-                    }
-                    xhr.addEventListener("readystatechange", () => {
-                        // Handling completion of file upload
-                        if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                            completedFiles++;
-                            cancelFileUploadButton.remove();
-                            updateFileStatus("Completed", "#00B125");
-                            fileCompletedStatus.innerText = `${completedFiles} / ${totalFiles} files completed`;
+                    // restrict file to upload if file size is more than 1 gb
+                    if (file.size <= (1024*1024*1024)) {
+                        // Inserting each file item into file list
+                        fileList.insertAdjacentHTML("afterbegin", fileItemHTML);
+                        const currentFileItem = document.querySelector(`#file-item-${uniqueIdentifier}`);
+                        const cancelFileUploadButton = currentFileItem.querySelector(".cancel-button");
+                        const xhr = handleFileUploading(file, uniqueIdentifier);
+                        // Update file status text and change color of it 
+                        const updateFileStatus = (status, color) => {
+                            currentFileItem.querySelector(".file-status").innerText = status;
+                            currentFileItem.querySelector(".file-status").style.color = color;
                         }
-                    });
-                    // Handling cancellation of file upload
-                    cancelFileUploadButton.addEventListener("click", () => {
-                        xhr.abort(); // Cancel file upload
-                        updateFileStatus("Cancelled", "#E3413F");
-                        cancelFileUploadButton.remove();
-                    });
-                    // Show Alert if there is any error occured during file uploading
-                    xhr.addEventListener("error", () => {
-                        updateFileStatus("Error", "#E3413F");
-                        // alert("An error occurred during the file upload!");
-                        toastr["error"]("An error occurred during the file upload.");
-                    });
+                        xhr.addEventListener("readystatechange", () => {
+                            // Handling completion of file upload
+                            if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                                completedFiles++;
+                                cancelFileUploadButton.remove();
+                                updateFileStatus("Completed", "#00B125");
+                                fileCompletedStatus.innerText = `${completedFiles} / ${totalFiles} files completed`;
+                            }
+                        });
+                        // Handling cancellation of file upload
+                        cancelFileUploadButton.addEventListener("click", () => {
+                            xhr.abort(); // Cancel file upload
+                            updateFileStatus("Cancelled", "#E3413F");
+                            cancelFileUploadButton.remove();
+                        });
+                        // Show Alert if there is any error occured during file uploading
+                        xhr.addEventListener("error", () => {
+                            updateFileStatus("Error", "#E3413F");
+                            // alert("An error occurred during the file upload!");
+                            toastr["error"]("An error occurred during the file upload.");
+                        });
+                    }
+                    else {
+                        toastr["error"]("Maximum file size 1GB, file is too large to handle.");
+                    }
                 }
                 else {
                     toastr["error"]("This file extension does not supported.");

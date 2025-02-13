@@ -13,7 +13,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown" style="text-align:right">
                         {# Howdy {% if is_granted('ROLE_ADMIN') %}Admin!{% elseif is_granted('ROLE_CO_ADMIN') %}Co-Admin!{% elseif is_granted('ROLE_USER') %}User!{% endif %} #}
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-user"></i> <span>{{ app.user.email }}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-user"></i> <span>{{ app.user.fullName }}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ path('app_logout') }}"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
                             <li><a id="backToHome" class="cursor-pointer"><i class="lnr lnr-arrow-left"></i> <span>Back to homepage</span></a></li>
