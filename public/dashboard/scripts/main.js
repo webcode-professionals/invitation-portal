@@ -31,11 +31,9 @@ $(document).ready(function() {
         let action_type = $(this).attr("data-type");
         if (id.length) {
             if (action_type == "delete" && action_for == "user")
-                window.location = window.location.origin + "/dashboard/users/delete/" + id;
+                window.location = window.location.origin + "/admin/users/delete/" + id;
             if (action_type == "delete" && action_for == "file")
                 window.location = window.location.origin + "/admin/files/delete/" + id;
-            if (action_type == "delete" && action_for == "mail template")
-                window.location = window.location.origin + "/admin//mail-template/delete/" + id;
         }
     });
     var data_table = [];
