@@ -183,41 +183,41 @@ function Home() {
                             <div className="carousel-indicators">
                                 <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
                                 <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                {/* <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="2" aria-label="Slide 3"></button> */}
-                                {/* <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="3" aria-label="Slide 4"></button> */}
+                                <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="3" aria-label="Slide 4"></button>
                                 {/* <button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="4" aria-label="Slide 5"></button> */}
                             </div>
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
-                                    <img src="images/slides/1.jpg" className="d-block w-100" alt="slide1" />
+                                    <img src={"images/slides/1.jpg?" + window.env.wed_version} className="d-block w-100" alt="slide1" />
                                     <div className="carousel-caption d-none d-md-block">
                                         <h3 data-animation="animated bounceInDown">{window.env.wed_person_name}</h3>
                                         <h4 data-animation="animated bounceInUp">{window.env.wed_var1} {window.env.wed_var2}, {window.env.wed_var3}</h4>
                                     </div>
                                 </div>
                                 <div className="carousel-item">
-                                    <img src="images/slides/3.jpg" className="d-block w-100" alt="slide3" />
+                                    <img src={"images/slides/2.jpg?" + window.env.wed_version} className="d-block w-100" alt="slide2" />
+                                    <div className="carousel-caption d-none d-md-block">
+                                        <h3 data-animation="animated bounceInDown">{window.env.wed_var4}</h3>
+                                        <h4 data-animation="animated bounceInUp">{window.env.wed_var5}</h4>
+                                    </div>
+                                </div>
+                                <div className="carousel-item">
+                                    <img src={"images/slides/3.jpg?" + window.env.wed_version} className="d-block w-100" alt="slide3" />
+                                    <div className="carousel-caption d-none d-md-block">
+                                        <h3 data-animation="animated bounceInDown">{window.env.wed_person_name}</h3>
+                                        <h4 data-animation="animated bounceInUp">{window.env.wed_var1} {window.env.wed_var2}, {window.env.wed_var3}</h4>
+                                    </div>
+                                </div>
+                                <div className="carousel-item">
+                                    <img src={"images/slides/4.jpg?" + window.env.wed_version} className="d-block w-100" alt="slide4" />
                                     <div className="carousel-caption d-none d-md-block">
                                         <h3 data-animation="animated bounceInDown">{window.env.wed_var4}</h3>
                                         <h4 data-animation="animated bounceInUp">{window.env.wed_var5}</h4>
                                     </div>
                                 </div>
                                 {/* <div className="carousel-item">
-                                    <img src="images/slides/2.jpg" className="d-block w-100" alt="slide2" />
-                                    <div className="carousel-caption d-none d-md-block">
-                                        <h3 data-animation="animated bounceInDown">Second slide label</h3>
-                                        <h4 data-animation="animated bounceInUp">Some representative placeholder content for the second slide.</h4>
-                                    </div>
-                                </div> */}
-                                {/* <div className="carousel-item">
-                                    <img src="images/slides/4.jpg" className="d-block w-100" alt="slide4" />
-                                    <div className="carousel-caption d-none d-md-block">
-                                        <h3 data-animation="animated bounceInDown">Forth slide label</h3>
-                                        <h4 data-animation="animated bounceInUp">Some representative placeholder content for the forth slide.</h4>
-                                    </div>
-                                </div>
-                                <div className="carousel-item">
-                                    <img src="images/slides/5.jpg" className="d-block w-100" alt="slide5" />
+                                    <img src={"images/slides/5.jpg?" + window.env.wed_version} className="d-block w-100" alt="slide5" />
                                     <div className="carousel-caption d-none d-md-block">
                                         <h3 data-animation="animated bounceInDown">Fifth slide label</h3>
                                         <h4 data-animation="animated bounceInUp">Some representative placeholder content for the fifth slide.</h4>
@@ -255,7 +255,7 @@ function Home() {
                             <div id="content24" data-section="content-24" className="row data-section">
                                 <div className="col-md-5">
                                     {window.env.Block_GroomImg ? (
-                                        <img src="images/groom.jpg" alt="groom" className="img-middle img-fluid" />
+                                        <img src={"images/groom.jpg?" + window.env.wed_version} alt="groom" className="img-middle img-fluid" />
                                     ) : (<span></span>)}
                                     <div className="align-center">
                                         <h3>{window.env.wed_groom_name}</h3>
@@ -268,13 +268,13 @@ function Home() {
                                 <div className="col-md-2 align-content-center">
                                     <div className="align-cente">
                                     {window.env.Block_MidImg ? (
-                                        <img src="images/phere.jpg" alt="phere" className="img-phere img-fluid" />
+                                        <img src={"images/phere.jpg?" + window.env.wed_version} alt="phere" className="img-phere img-fluid" />
                                     ) : (<span></span>)}
                                     </div>
                                 </div>
                                 <div className="col-md-5">
                                     {window.env.Block_BrideImg ? (
-                                        <img src="images/bride.jpg" alt="bride" className="img-middle img-fluid" />
+                                        <img src={"images/bride.jpg?" + window.env.wed_version} alt="bride" className="img-middle img-fluid" />
                                     ) : (<span></span>)}
                                     <div className="align-center">
                                         <h3>{window.env.wed_bride_name}</h3>
@@ -362,8 +362,8 @@ function Home() {
                                 {PortfolioImg.map((portImg, key) => {
                                     return (
                                         <div className="col-lg-3 col-md-6 col-sm-6 work" key={key}>
-                                            <a href={"images/portfolio/" + portImg} className="work-box">
-                                                <img src={"images/portfolio/" + portImg} alt="" />
+                                            <a href={"images/portfolio/" + portImg + "?" + window.env.wed_version} className="work-box">
+                                                <img src={"images/portfolio/" + portImg + "?" + window.env.wed_version} alt="" />
                                                 <div className="overlay">
                                                     <div className="overlay-caption">
                                                         <p><span className="icon icon-magnifying-glass"></span></p>
@@ -393,7 +393,7 @@ function Home() {
                                         return (
                                             <div className="col-md-3 col-sm-6" key={key}>
                                                 <div className="person">
-                                                    {team.img_name ? (<img src={img_path + "/" + team.img_name} alt="" className="img-fluid" />) : (<span></span>)}
+                                                    {team.img_name ? (<img src={img_path + "/" + team.img_name + "?" + window.env.wed_version} alt="" className="img-fluid" />) : (<span></span>)}
                                                     <div className="person-content">
                                                         <h4>{team.name}</h4>
                                                         <p>{team.relation}</p>
@@ -459,8 +459,8 @@ function Home() {
                                     </div>
                                     <div className="col-md-6 ps-5">
                                         <p>Create your own invitation website.</p>
-                                        <p>At just $30/- or ₹2499/- for 60 days and it will be ready in 30 minutes.</p>
-                                        <p className='mb-5'>Share your photographs with your loved ones at just additional cost of $12/- or ₹999/- per month.</p>
+                                        <p>At just $18/- or ₹1499/- for 60 days and it will be ready in 30 minutes.</p>
+                                        <p className='mb-5'>Share your photographs with your loved ones at just additional cost of $6/- or ₹499/- per month.</p>
                                         <h3>OUR POINT OF CONTACT</h3>
                                         <address className="mt-3">
                                             <p> <i className="fa fa-phone"></i> +91 9464528225</p>
@@ -513,8 +513,8 @@ function Home() {
                 <div className='advBanner'>
                     <span className='close-cross-btn'>×</span>
                     <p>Create your own invitation website.</p>
-                    <p>At just $30/- or ₹2499/- for 60 days and it will be ready in 30 minutes.</p>
-                    <p>Share your photographs with your loved ones at just additional cost of $12/- or ₹999/- per month.</p>
+                    <p>At just $18/- or ₹1499/- for 60 days and it will be ready in 30 minutes.</p>
+                    <p>Share your photographs with your loved ones at just additional cost of $6/- or ₹499/- per month.</p>
                     <p>Contact us via email <a href='mailto:contact@itdevs.in'>contact@itdevs.in</a></p>
                     <p className='text-center'><a className="btn" href='mailto:contact@itdevs.in'>Contact us</a></p>
                 </div>
