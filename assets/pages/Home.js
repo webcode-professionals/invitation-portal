@@ -172,7 +172,7 @@ function Home() {
                                     <li><a href="#contact">{window.env.wed_contact}</a></li>
                                 ) : (<span></span>)}
                                 {window.env.Block_Login ? (
-                                    <li><a href={window.env.APP_URL +''+ login_path}>{window.env.wed_login}</a></li>
+                                    <li><a href="#" data-login>{window.env.wed_login}</a></li>
                                 ) : (<span></span>)}
                             </ul>
                         </nav>

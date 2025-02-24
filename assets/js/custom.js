@@ -45,6 +45,11 @@ $(function(){
 				scrollTop: $(id).offset().top - 75
 			}, 500);
 		}
+		else {
+			if($(this).attr('data-login').length) {
+				window.location.href = window.env.APP_URL +''+ login_path;
+			}
+		}
 		$('.nav-toggle').toggleClass('close-nav');
 		nav.toggleClass('open');
 		return false;
