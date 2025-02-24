@@ -9,11 +9,15 @@ use App\Entity\User;
 use App\Service\HelperService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Psr\Log\LoggerInterface;
 
 #[Route('/admin/users')]
 final class UsersController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManagerInterface, private HelperService $helperService) {
+    public function __construct(private EntityManagerInterface $entityManagerInterface, private HelperService $helperService, private MailerInterface $mailerInterface, private LoggerInterface $loggerInterface) {
     }
 
     #[Route('', name: 'app_users')]
@@ -70,6 +74,22 @@ final class UsersController extends AbstractController
                 else{
                     $user->setIsApproved(true);
                     $this->addFlash('success', 'Requested user has been approved');
+                    try {
+                        #send an email to the user status approved.
+                        $emailToUser = (new Email())
+                            ->to($user->getEmail())
+                            ->priority(Email::PRIORITY_HIGH)
+                            ->subject('User status approved!')
+                            ->html("
+                                <p>Hello User!</p>
+                                <p>Email :" . (string) $user->getEmail() . "</p>
+                                <p>Your registration has been approved, now you can view the files.</p>
+                            ");
+                        $this->mailerInterface->send($emailToUser);
+                    }
+                    catch(TransportExceptionInterface $ex) {
+                        $this->loggerInterface->info("Mail not sent to user ".var_export($ex, true));
+                    }
                 }
                 $this->entityManagerInterface->flush();
                 return $this->redirectToRoute('app_users');

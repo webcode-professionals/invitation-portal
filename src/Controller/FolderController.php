@@ -89,11 +89,11 @@ final class FolderController extends AbstractController
         return $this->redirectToRoute('app_dashboard');
     }
 
-    #[Route('/download/{fileType}/{folderName}/{fileName}', name: 'app_download_files')]
-    public function downloadFilesFromFolder($fileType, $folderName, $fileName) {
+    #[Route('/download/{fileType}/{folderName}/{fileName}/{extention}', name: 'app_download_files')]
+    public function downloadFilesFromFolder($fileType, $folderName, $fileName, $extention) {
         $roles = $this->getUser()->getRoles();
         if(!empty($fileType) && !empty($folderName) && !empty($fileName) && in_array('ROLE_USER', $roles) ) {
-            $sharedFilesPath = $this->getParameter('file_upload_path'). "/". $fileType ."/". $folderName ."/" .$fileName;
+            $sharedFilesPath = $this->getParameter('file_upload_path') ."/". $fileType ."/". $folderName ."/". $fileName .".". $extention;
             if(file_exists($sharedFilesPath)) {
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');

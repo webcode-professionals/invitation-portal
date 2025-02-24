@@ -161,9 +161,12 @@ $(document).ready(function() {
         }
     });
 
-    if($('.shared-image-box').length) {
-        $('.shared-image-box').fancybox();
-    }
+    // if($('.shared-image-box').length) {
+    //     $('.shared-image-box').fancybox();
+    // }
+    Fancybox.bind('[data-fancybox]', {
+        // Custom options
+      }); 
 
     /** file uploader js start*/
     const fileUploadBox = document.querySelector(".file-upload-box");

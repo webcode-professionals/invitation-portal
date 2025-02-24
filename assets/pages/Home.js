@@ -171,6 +171,9 @@ function Home() {
                                 {window.env.Block_Contact ? (
                                     <li><a href="#contact">{window.env.wed_contact}</a></li>
                                 ) : (<span></span>)}
+                                {window.env.Block_Login ? (
+                                    <li><a href="/security/login">{window.env.wed_login}</a></li>
+                                ) : (<span></span>)}
                             </ul>
                         </nav>
                         <a href="#" className="nav-toggle">{window.env.APP_NAME}<span></span></a>

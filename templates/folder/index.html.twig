@@ -46,13 +46,14 @@
                                                 <tr>
                                                     <td>{{ loop.index }}</td>
                                                     <td>
-                                                        <a href="/{{ file_upload_path }}/{{ sharedFile }}" class="shared-image-box cursor-zoom-in">
+                                                        <a href="/{{ file_upload_path }}/{{ sharedFile }}" class="shared-image-box cursor-zoom-in" data-fancybox="gallery">
                                                             <img src="/{{ file_upload_path }}/{{ sharedFile }}" class="img-thumb">
                                                         </a>
                                                     </td>
                                                     {% set trimmedPath = sharedFile|trim('images/' ~ folderName ~ '/', 'left') %}
+                                                    {% set fileName = trimmedPath|split('.') %}
                                                     <td class="sharedFileName" data-folderName="{{ folderName }}" data-fileType="images" data-fileName="{{ trimmedPath }}">{{ trimmedPath }}</td>
-                                                    <td><a href="{{ path('app_download_files', {fileType: 'images', folderName: folderName, fileName: trimmedPath}) }}" data-fileType="images" data-folderName="{{ folderName }}" data-fileName="{{ trimmedPath }}"><i class="lnr lnr-download"></i></a></td>
+                                                    <td><a href="{{ path('app_download_files', {fileType: 'images', folderName: folderName, fileName: fileName[0], extention: fileName[1]}) }}" data-fileType="images" data-folderName="{{ folderName }}" data-fileName="{{ trimmedPath }}"><i class="lnr lnr-download"></i></a></td>
                                                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CO_ADMIN') %}
                                                         <td><a href="{{ path('app_delete_files', {fileType: 'images', folderName: folderName, fileName: trimmedPath}) }}" data-fileType="images" data-folderName="{{ folderName }}" data-fileName="{{ trimmedPath }}"><i class="lnr lnr-trash"></i></a></td>
                                                     {% endif %}
