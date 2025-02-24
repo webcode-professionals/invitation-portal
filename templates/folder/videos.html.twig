@@ -45,13 +45,17 @@
                                             {% for sharedFile in sharedFiles %}
                                                 <tr>
                                                     <td>{{ loop.index }}</td>
-                                                    <td>
-                                                        <a href="/{{ file_upload_path }}/{{ sharedFile }}" class="shared-image-box cursor-zoom-in" data-fancybox="gallery">
-                                                            <img src="{{ asset('images/play-thumbnail.png') }}" class="img-thumb">
-                                                        </a>
-                                                    </td>
                                                     {% set trimmedPath = sharedFile|trim('videos/' ~ folderName ~ '/', 'left') %}
                                                     {% set fileName = trimmedPath|split('.') %}
+                                                    <td>
+                                                        {% if fileName[1] == "mp4" %}
+                                                            <a href="/{{ file_upload_path }}/{{ sharedFile }}" class="shared-image-box cursor-zoom-in" data-fancybox="gallery">
+                                                                <img src="{{ asset('images/play-thumbnail.png') }}" class="img-thumb">
+                                                            </a>
+                                                        {% else %}
+                                                            <span>No Preview</span>
+                                                        {% endif %}
+                                                    </td>
                                                     <td class="sharedFileName" data-fileType="videos" data-folderName="{{ folderName }}" data-fileName="{{ trimmedPath }}">{{ trimmedPath }}</td>
                                                     <td><a href="{{ path('app_download_files', {fileType: "videos", folderName: folderName, fileName: fileName[0], extention: fileName[1]}) }}" data-fileType="videos" data-folderName="{{ folderName }}" data-fileName="{{ trimmedPath }}"><i class="lnr lnr-download"></i></a></td>
                                                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CO_ADMIN') %}
