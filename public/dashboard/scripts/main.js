@@ -23,6 +23,26 @@ $(document).ready(function() {
             $("#modal-notification-btn").attr("data-type", action_type);
             $("#modal-notification-btn").attr("data-for", action_for);
         }
+        else if (action_type == "permission") {
+            $(".selected_users_id").val(id);
+            $(".selected_users_type").val(action_type);
+            $(".selected_users_for").val(action_for);
+            let permissions = $(this).attr("data-permission");
+            permissions = JSON.parse(permissions);
+            if(permissions) {
+                let images = permissions['images'];
+                let videos = permissions['videos'];
+                for(key in images)
+                {
+                    $('input:checkbox[name="folderNames[images][]"][value="' + images[key] + '"]').prop('checked',true);
+                }
+                for(key in videos)
+                {
+                    $('input:checkbox[name="folderNames[videos][]"][value="' + videos[key] + '"]').prop('checked',true);
+                }
+                $('.all_select_folders').trigger('change');
+            }
+        }
     });
 
     $("body").on("click", ".modal-submit-btn", function() {
@@ -136,11 +156,11 @@ $(document).ready(function() {
             checkbox_input.each(function() {
                 ids.push(this.value);
             });
-            $("#selected_users_id").val(ids);
+            $(".selected_users_id").val(ids);
             $("#select_delete").addClass("hidden");
             $("#select_users_modal-btn").attr("disabled", "disabled");
-            $("#selected_users_type").val(action_type);
-            $("#selected_users_for").val(action_for);
+            $(".selected_users_type").val(action_type);
+            $(".selected_users_for").val(action_for);
             if (action_type == "delete") {
                 delete_count = checkbox_input.length;
                 $("#select_users_modal-msg").text("You are about to delete selected " + delete_count + " " + action_for + ",");
@@ -158,7 +178,30 @@ $(document).ready(function() {
                 if (active_count > 0)
                     $("#select_users_modal-btn").removeAttr("disabled");
             }
+            else if (action_type == "permission") {
+                //do some activity
+            }
         }
+    });
+
+    $("body").on('change', '.all_select_folders', function(e) {
+        var checkbox_input = $('input[type=checkbox].select_folders');
+        var checked_member = false;
+        if (e.originalEvent === undefined) {
+            var allChecked = true;
+            checkbox_input.each(function() {
+                allChecked = allChecked && this.checked;
+                if (this.checked)
+                    checked_member = this.checked;
+            });
+            this.checked = allChecked;
+        } else {
+            checkbox_input.prop('checked', this.checked);
+        }
+    });
+
+    $("body").on('change', 'input[type=checkbox].select_folders', function() {
+        $('.all_select_folders').trigger('change');
     });
 
     // if($('.shared-image-box').length) {

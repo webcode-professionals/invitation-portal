@@ -35,7 +35,8 @@ final class FolderController extends AbstractController
     public function getFilesImagesFromFolder($folderName): Response
     {
         $roles = $this->getUser()->getRoles();
-        if( !empty($folderName) && in_array('ROLE_USER', $roles) ) {
+        $is_permission = $this->helperService->checkPermission($this->getUser(), 'images', $folderName);
+        if( $is_permission && !empty($folderName) && in_array('ROLE_USER', $roles) ) {
             $imagesFolders = $this->helperService->getImagesFolders();
             $videosFolders = $this->helperService->getVideosFolders();
             $sharedFiles = [];
@@ -64,7 +65,8 @@ final class FolderController extends AbstractController
     public function getFilesVideosFromFolder($folderName): Response
     {
         $roles = $this->getUser()->getRoles();
-        if( !empty($folderName) && in_array('ROLE_USER', $roles) ) {
+        $is_permission = $this->helperService->checkPermission($this->getUser(), 'videos', $folderName);
+        if( $is_permission && !empty($folderName) && in_array('ROLE_USER', $roles) ) {
             $imagesFolders = $this->helperService->getImagesFolders();
             $videosFolders = $this->helperService->getVideosFolders();
             $sharedFiles = [];

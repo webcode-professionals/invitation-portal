@@ -20,9 +20,9 @@
                         <div class="text-center">
                             <i class="fa fa-bell fa-3x text-warning bell-icon"></i>
                             <h4 class="heading margin-top-30">You should read this!</h4>
-                            <input type="hidden" name="ids" value="" id="selected_users_id">
-                            <input type="hidden" name="data_type" value="" id="selected_users_type">
-                            <input type="hidden" name="data_for" value="" id="selected_users_for">
+                            <input type="hidden" name="ids" value="" class="selected_users_id">
+                            <input type="hidden" name="data_type" value="" class="selected_users_type">
+                            <input type="hidden" name="data_for" value="" class="selected_users_for">
                             <p><span id="select_users_modal-msg"></span><span class="text-danger" id="select_delete"> This action can't be reversed.</span></p>
                         </div>
                     </div>
@@ -60,6 +60,65 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="user_permission_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="user_permission_modal" >
+        <div class="modal-dialog modal-danger modal-dialog-centered" role="document">
+            <div class="modal-content" id="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-title-notification">Provide folder permission to selected user.</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span >×</span>
+                    </button>
+                </div>
+                <form action="{{ path('app_users_permission') }}" method="post">
+                    <div class="modal-body row">
+                        <div class="col-md-12 text-center">
+                            <input type="hidden" name="ids" value="" class="selected_users_id">
+                            <input type="hidden" name="data_type" value="" class="selected_users_type">
+                            <input type="hidden" name="data_for" value="" class="selected_users_for">
+                            <p><input type="checkbox" class="all_select_folders" style="cursor:pointer;"> <label>All</label></p>
+                            <div class="col-md-6">
+                                <h3>Images</h3>
+                                {% if imagesFolders %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        {% for folder in imagesFolders %}
+                                            <p><input type="checkbox" class="select_folders" name="folderNames[images][]" value="{{ folder.name }}" style="cursor:pointer;"> <label>{{ folder.name }}</label></p>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for folder in app.user.folderPermission['images'] %}
+                                            <p><input type="checkbox" class="select_folders" name="folderNames[images][]" value="{{ folder }}" style="cursor:pointer;"> <label>{{ folder }}</label></p>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% else %}
+                                    <p>No folder has been created yet.</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <h3>Videos</h3>
+                                {% if videosFolders %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        {% for folder in videosFolders %}
+                                            <p><input type="checkbox" class="select_folders" name="folderNames[videos][]" value="{{ folder.name }}" style="cursor:pointer;"> <label>{{ folder.name }}</label></p>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for folder in app.user.folderPermission['videos'] %}
+                                            <p><input type="checkbox" class="select_folders" name="folderNames[videos][]" value="{{ folder }}" style="cursor:pointer;"> <label>{{ folder }}</label></p>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% else %}
+                                    <p>No folder has been created yet.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" id="user_permission_modal-btn" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- end modal box -->
     <!-- MAIN -->
     <div class="main">
@@ -81,6 +140,7 @@
                                             <li><a href="#" class="status-item selected-action" data-for="users" data-type="approve" data-toggle="modal" data-target="#select_users_modal"><i class="fa fa-check"></i>Approve selected users</a></li>
                                             <li><a href="#" class="status-item selected-action" data-for="users" data-type="disapprove" data-toggle="modal" data-target="#select_users_modal"><i class="lnr lnr-cross"></i>Disapprove selected users</a></li>
                                             <li><a href="#" class="delete-item selected-action" data-for="users" data-type="delete" data-toggle="modal" data-target="#select_users_modal"><i class="lnr lnr lnr-trash"></i>Delete selected users</a></li>
+                                            <li><a href="#" class="status-item selected-action" data-for="users" data-type="permission" data-toggle="modal" data-target="#user_permission_modal"><i class="lnr lnr-cog"></i>Permission</a></li>
                                         </ul>
                                     </span>
                                 </div>
@@ -142,6 +202,7 @@
                                                                     <li><a href="{{ path('app_users_status', {id: webUser.id}) }}" data-id="{{ webUser.id }}" class="status-item">{% if webUser.isApproved %}<i class="lnr lnr-cross"></i>Disapprove{% else %}<i class="fa fa-check"></i>Approve{% endif %}</a></li>
                                                                     <li><a href="#" data-id="{{ webUser.id }}" class="delete-item list-action" data-for="user" data-type="delete" data-toggle="modal" data-target="#modal-notification"><i class="lnr lnr lnr-trash"></i>Delete</a></li>
                                                                     <li><a href="{{ path('app_users_role', {id: webUser.id}) }}" data-id="{{ webUser.id }}" class="status-item">{% if "ROLE_CO_ADMIN" in webUser.roles %}<i class="lnr lnr-chevron-down-circle"></i>Make User{% elseif "ROLE_USER" in webUser.roles %}<i class="lnr lnr-chevron-up-circle"></i>Make Co-Admin{% endif %}</a></li>
+                                                                    <li><a href="#" data-id="{{ webUser.id }}" data-permission="{{ webUser.folderPermission|json_encode }}" class="list-action" data-for="users" data-type="permission" data-toggle="modal" data-target="#user_permission_modal"><i class="lnr lnr lnr-cog"></i>Permission</a></li>
                                                                 {% endif %}
                                                             </ul>
                                                         </li>

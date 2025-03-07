@@ -125,4 +125,35 @@ final class UsersController extends AbstractController
         $this->addFlash('error', 'Unauthorized Access');
         return $this->redirectToRoute('app_dashboard'); 
     }
+
+    #[Route('/permission', name: 'app_users_permission')]
+    public function updateUserPermission(Request $request)
+    {
+        $roles = $this->getUser()->getRoles();
+        if( in_array('ROLE_ADMIN', $roles) || in_array('ROLE_CO_ADMIN', $roles)) {
+            $payload = $request->getPayload()->all();
+            $data_type = htmlspecialchars(trim($payload['data_type']));
+            $data_for = htmlspecialchars(trim($payload['data_for']));
+            $ids = htmlspecialchars(trim($payload['ids']));
+            $folderNames = json_encode($payload['folderNames'] ?? []);
+            // dd($ids, $data_type, $data_for, $folderNames);
+
+            if(!empty($ids) && in_array($data_type, ["permission"]))
+            {
+                $conn = $this->entityManagerInterface->getConnection();
+                if($data_for == "users") {
+                    if($data_type == "permission"){
+                        $conn->executeQuery("UPDATE user SET folder_permission = '$folderNames' WHERE id IN (".$ids.")");
+                        $this->addFlash('success', 'Requested user permission updated');
+                    }
+                    $this->entityManagerInterface->flush();
+                    return $this->redirectToRoute('app_users');
+                }
+            }
+            $this->addFlash('error', 'Unprocessable Entity');
+            return $this->redirectToRoute('app_dashboard');
+        }
+        $this->addFlash('error', 'Unauthorized Access');
+        return $this->redirectToRoute('app_dashboard');
+    }
 }

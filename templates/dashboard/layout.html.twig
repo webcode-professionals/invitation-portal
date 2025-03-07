@@ -52,7 +52,10 @@
                                 <ul class="nav">
                                     {% if imagesFolders %}
                                         {% for folder in imagesFolders %}
-                                            <li><a href="{{ path('app_folder_files_images', {folderName: folder.name}) }}" {% if 'images' in currentPath and folder.name in currentPath %}class="active"{% endif %}><i class="fa fa-folder"></i> {{ folder.name }}</a></li>
+                                            {# check user have the folder permission #}
+                                            {% if is_granted('ROLE_ADMIN') or app.user.folderPermission and folder.name in app.user.folderPermission['images'] %}
+                                                <li><a href="{{ path('app_folder_files_images', {folderName: folder.name}) }}" {% if 'images' in currentPath and folder.name in currentPath %}class="active"{% endif %}><i class="fa fa-folder"></i> {{ folder.name }}</a></li>
+                                            {% endif %}
                                         {% endfor %}
                                     {% else %}
                                         <li><a href="#" class=""><i class="fa fa-ban"></i> No Folder</a></li>
@@ -66,7 +69,10 @@
                                 <ul class="nav">
                                     {% if videosFolders %}
                                         {% for folder in videosFolders %}
-                                            <li><a href="{{ path('app_folder_files_videos', {folderName: folder.name}) }}" {% if 'videos' in currentPath and folder.name in currentPath %}class="active"{% endif %}><i class="fa fa-folder"></i> {{ folder.name }}</a></li>
+                                            {# check user have the folder permission #}
+                                            {% if is_granted('ROLE_ADMIN') or app.user.folderPermission and folder.name in app.user.folderPermission['videos'] %}
+                                                <li><a href="{{ path('app_folder_files_videos', {folderName: folder.name}) }}" {% if 'videos' in currentPath and folder.name in currentPath %}class="active"{% endif %}><i class="fa fa-folder"></i> {{ folder.name }}</a></li>
+                                            {% endif %}
                                         {% endfor %}
                                     {% else %}
                                         <li><a href="#" class=""><i class="fa fa-ban"></i> No Folder</a></li>

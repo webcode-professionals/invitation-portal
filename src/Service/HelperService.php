@@ -25,4 +25,11 @@ class HelperService{
         return str_replace($this->containerBagInterface->get('file_upload_path').'/',"", $value);
     }
 
+    public function checkPermission($user, $folderType, $folderName) {
+        $user = $this->entityManagerInterface->getRepository(User::class)->find($user);
+        $roles = $user->getRoles();
+        $permission = $user->getFolderPermission();
+        return in_array("ROLE_ADMIN", $roles) || in_array($folderName, $permission[$folderType]);
+    }
+
 }
