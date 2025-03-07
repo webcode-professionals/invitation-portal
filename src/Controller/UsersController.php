@@ -13,6 +13,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/admin/users')]
 final class UsersController extends AbstractController
@@ -84,6 +85,7 @@ final class UsersController extends AbstractController
                                 <p>Hello User!</p>
                                 <p>Email :" . (string) $user->getEmail() . "</p>
                                 <p>Your registration has been approved, now you can view the files.</p>
+                                <p><a href=" . $this->generateUrl('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL) . ">" . $this->generateUrl('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL) . "</a></p>
                             ");
                         $this->mailerInterface->send($emailToUser);
                     }

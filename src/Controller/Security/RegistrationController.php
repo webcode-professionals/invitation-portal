@@ -20,6 +20,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/security')]
 class RegistrationController extends AbstractController
@@ -75,6 +76,7 @@ class RegistrationController extends AbstractController
                         <p>Hello Admin!</p>
                         <p>Email :" . (string) $user->getEmail() . "</p>
                         <p>New user has been registered, please take a action for the approval.</p>
+                        <p><a href=" . $this->generateUrl('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL) . ">" . $this->generateUrl('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL) . "</a></p>
                     ");
                 $this->mailerInterface->send($emailToAdmin);
             }
